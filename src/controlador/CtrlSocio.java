@@ -3,19 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectoprog;
+package controlador;
 
 /**
  *
- * @author Alumno
+ * @author Mario
  */
-public class ProyectoProg {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-
-    }
+public class CtrlSocio {
+    
     
 }
