@@ -26,7 +26,6 @@ public class ProyectoProg {
         CtrlDataBase db = new CtrlDataBase(bd, user, password, servidor);
         
         if (db.abrirConexion()) {
-
             VentanaPpal v=new VentanaPpal(db);
         }
 
