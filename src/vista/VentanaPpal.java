@@ -60,7 +60,7 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         contenedor=(JPanel) this.getContentPane();
 
         contenedor.setLayout(new BorderLayout());
-        titulo=new JLabel("Curso",SwingConstants.CENTER);
+        titulo=new JLabel("Gestion",SwingConstants.CENTER);
         titulo.setFont(new Font("Courier", Font.BOLD, 24));
          
         
@@ -81,8 +81,8 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
      * ToDo
      */
     private void fin(){
-        //DocumentoXML.generaXML("Clase", db.ejecutaConsulta("SELECT * from alumnos"));
-        //db.cerrarConexion();
+        //CtrlDocumentoXML.generaXML("Clase", db.ejecutaConsulta("SELECT * from alumnos"));
+        db.cerrarConexion();
         System.exit(0);
     }
     
@@ -105,7 +105,7 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 //VentanaBorrarSus va=new VentanaBorrarSus(db,this);
                 break;
             case "6":
-                //fin();
+                fin();
                 break;                
             default: 
                 this.dispose();
@@ -120,12 +120,12 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
 
     @Override
     public void windowClosing(WindowEvent e) {
-        //fin();
+        fin();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        //fin();
+        fin();
     }
 
     @Override

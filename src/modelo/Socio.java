@@ -6,14 +6,12 @@ package modelo;
  * @version 20/05/2016
  */
 public class Socio {
-    private String cod_soc;
+    private int cod_soc;
     private String nombre;
     private String apellido;
     private String dni_nif;
     private String direccion;
-    private String codPostal;
-    private String provincia;
-    private String localidad;
+    private String tlfMovil;
 
     /**
      * 
@@ -22,21 +20,17 @@ public class Socio {
      * @param apellido String con los apellidos
      * @param dni_nif String con el DNI o NIF
      * @param direccion String con la direccion
-     * @param codPostal Numero que representa el código postal
-     * @param provincia String con la provincia
-     * @param localidad String con la localidad
+     * @param tlfMovil String con el telefono movil
      * @see #compruebaDatos() 
      */    
-    public Socio(String cod_soc, String nombre, String apellido, String dni_nif, 
-                 String direccion, String codPostal, String provincia, String localidad) {
+    public Socio(int cod_soc, String nombre, String apellido, String dni_nif, 
+                 String direccion, String tlfMovil) {
         this.cod_soc = cod_soc;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni_nif = dni_nif;
         this.direccion = direccion;
-        this.codPostal = codPostal;
-        this.provincia = provincia;
-        this.localidad = localidad;
+        this.tlfMovil = tlfMovil;
         compruebaDatos();        
     }
     

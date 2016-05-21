@@ -5,10 +5,152 @@
  */
 package controlador;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import oracle.jdbc.driver.OracleDriver;
+
 /**
  *
  * @author Mario
  */
 public class CtrlDataBase {
+    String bd;
+    String login;
+    String password;
+    String servidor;
+    Connection conexion;
     
+    public CtrlDataBase(String bd, String login, String password, String servidor) {
+
+        this.bd = bd;
+        this.login = login;
+        this.password = password;
+        this.servidor = servidor;
+    }
+    
+    public boolean abrirConexion() {
+
+        boolean estado = false;
+
+        try {
+            DriverManager.registerDriver( new OracleDriver());//oracle
+
+            // Crear conenection a la base de datos.
+            conexion = DriverManager.getConnection(servidor + bd, login, password);
+            estado = true;
+            System.out.println("Conectado");
+        } catch (SQLException e) {
+            System.out.println("SQL Exception:\n" + e.toString());
+        } catch (Exception e) {
+            System.out.println("Exception:\n" + e.toString());
+        }
+
+        return estado;
+    }
+        
+    public void cerrarConexion() {
+
+        try {
+            conexion.close();
+            System.out.println("Desconectado");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+        public int ejecutaUpdate(String statement) {
+        int n = 0;
+        try {
+            Statement st = conexion.createStatement();
+            System.out.println("La sentencia es: " + statement);
+            n = st.executeUpdate(statement);
+            System.out.println("Se ha ejecutado correctamente");
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n" + ex.getMessage());
+        }
+        return n;
+    }
+
+//    public ResultSet ejecutaConsulta(String consulta) {
+//        Statement st = null;
+//        ResultSet rs = null;
+//        try {
+//            st = conexion.createStatement();
+//            rs = st.executeQuery(consulta);
+//        } catch (SQLException ex) {
+//            System.out.println("Error sql: " + ex.getMessage());
+//        }
+////        try {
+////            st.close();
+////        } catch (SQLException ex) {
+////            System.out.println("Error sql: " + ex.getMessage());
+////        }
+//        return rs;
+//    }
+
+//    public boolean buscaRegistro(String dniBuscar) {
+//        ResultSet rs;
+//        /*
+//        Directamente la consulta sería así
+//        rs=db.ejecutaConsulta("SELECT * from alumnos where nombre='" + nombre.getText()+"';");
+//        Creo un String con la consulta para ver por consola la inyección de código
+//        probaremos poniendo en el nombre: Pepe' or 1='1
+//         */
+//        String sentencia = "SELECT * from voluntario where dni='" + dniBuscar + "';";
+//        System.out.println(sentencia);
+//        rs = ejecutaConsulta(sentencia);
+//        try {
+//            //VIP primero compruebo que rs no es nullo, si lo es, lo segundo no se ejecuta
+//            if (rs != null) {
+//                if (rs.isBeforeFirst()) {
+//                    
+////                    VentanaListado vL = new VentanaListado(rs);
+//                } else {
+//                    return false;
+//                }
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("Error con la base de datos: " + ex.getMessage());
+//        }
+//        return true; //aunque puede ser que se haya producido la excepción.  contamos conn el mensaje
+//    }
+//
+//    public void cierraResultSet(ResultSet rs) {
+//        try {
+//            //cerramos el rs. porque garbage no puede eliminar el heap
+//            rs.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Error con la base de datos: " + ex.getMessage());
+//        }
+//    }
+
+//    public void recorreResultado(ResultSet rs) {
+//        try {
+//            while (rs.next()) {
+//                System.out.println(rs.getString(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3)
+//                        + "\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6)
+//                 + "\t" + rs.getString(7) + "\t" + rs.getString(8) + "\t" + rs.getString(9)
+//                 + "\t" + rs.getString(10));
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("Error sql: " + ex.getMessage());
+//        }
+//    }
+    
+//    public void pasarDatos(ResultSet rs, ArrayList voluntarios){
+//        try {
+//            while (rs.next()) {
+//                Voluntario v1= new Voluntario(rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5));
+//                v1.setTelefono(rs.getString(7));
+//                v1.setHorasDedicadas(Integer.parseInt(rs.getString(10)));
+//                voluntarios.add(v1);
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("Error sql: " + ex.getMessage());
+//        }
+//    }
 }

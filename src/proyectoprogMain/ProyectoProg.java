@@ -5,6 +5,9 @@
  */
 package proyectoprogMain;
 
+import controlador.CtrlDataBase;
+import vista.VentanaPpal;
+
 /**
  *
  * @author Mario
@@ -15,6 +18,17 @@ public class ProyectoProg {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        String servidor = "jdbc:oracle:thin:@localhost:";
+        String bd = "1521:xe";
+        String user = "damlocal";
+        String password = "maradiaga";
+        
+        CtrlDataBase db = new CtrlDataBase(bd, user, password, servidor);
+        
+        if (db.abrirConexion()) {
+
+            VentanaPpal v=new VentanaPpal(db);
+        }
 
     }
     
