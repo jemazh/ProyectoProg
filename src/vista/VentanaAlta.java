@@ -108,43 +108,74 @@ public class VentanaAlta extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(this,cadena);
     }
     
-    private boolean compruebaDatos(){
+    private boolean datosCorrectos(){
         boolean correcto=true;
         
-        for (int i = 0; i < textEtiqTipoLong.length; i++) {
+        for (int i = 0; i < textEtiqTipoLong.length; i++) {            
             
-            if (textEtiqTipoLong[i][1].equals("NUMERIC")){
-                compruebaEntero(textEtiqTipoLong[i],i);
+            if (!compruebaDatos(textEtiqTipoLong[i],campo[i].getText())){
+                campo[i].setBackground(Color.yellow);
+                correcto=false;
+            }else{
+                campo[i].setBackground(Color.white);
             }
-                
             
-            
-            
-        }
-        
-        
-        
+        }     
         return correcto;
     }
     
-    private boolean compruebaEntero(String [] dato, int i){
-        int n;
-        
-        try{
-            n=Integer.parseInt(dato[2]);
-            //if ()
-                
+    private boolean compruebaDatos(String [] dato, String valor){
+        boolean correcto;
             
-        }catch (NumberFormatException e){
-            campo[i].setBackground(Color.RED);
-            return false;
+        switch (dato[0]){
+            case "NUMERIC":
+                correcto=compruebaEntPositivo(dato,valor);
+                break;
+            case "VARCHAR":
+                correcto=compruebaCadena(dato,valor);
+                break;
+            default:
+                correcto=false;
+                break;
         }
+        
+        return correcto;
+    }    
     
-        return true;
+    // si NO es obligatorio y esta vacio devolvemos "true"
+    private boolean compruebaEntPositivo(String [] dato, String valor) {
+        boolean correcto=true;
+ 
+        if ((dato[0].contains("*"))&&(valor.replaceAll(" ","").isEmpty())){
+            correcto = false;
+        }else{
+            if (!(valor.length()>=0 && valor.length()<=Integer.parseInt(dato[2]))){
+                correcto=false;
+            }else{
+                if(!valor.isEmpty()){                    
+                    try{
+                        int n=Integer.parseInt(valor); 
+
+                    }catch (NumberFormatException e){
+                        correcto = false;
+                    }
+                }    
+            }
+        }
+        return correcto;
     }
     
-    private boolean compruebaCadena(String cadena,int longitud){
-        return cadena.length() > 0 && cadena.length() <=longitud;
+    private boolean compruebaCadena(String [] dato, String valor){
+        boolean correcto=true;
+ 
+        if ((dato[0].contains("*"))&&(valor.replaceAll(" ","").isEmpty())){
+            correcto = false;
+        }else{
+            if (!(valor.length()>=0 && valor.length()<=Integer.parseInt(dato[2]))){
+                correcto=false;
+            }  
+        }
+        return correcto;
     }
             
 //    private void alta(){
