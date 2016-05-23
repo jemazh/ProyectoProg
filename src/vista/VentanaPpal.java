@@ -60,8 +60,8 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         contenedor=(JPanel) this.getContentPane();
 
         contenedor.setLayout(new BorderLayout());
-        titulo=new JLabel("Gestion",SwingConstants.CENTER);
-        titulo.setFont(new Font("Courier", Font.BOLD, 24));
+        titulo=new JLabel("Gestion Club",SwingConstants.CENTER);
+        titulo.setFont(new Font("Courier", Font.ITALIC, 24));
          
         
 
@@ -90,7 +90,7 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){
             case "1":
-                //VentanaAlta va=new VentanaAlta(db,this);
+                VentanaAlta va=new VentanaAlta(db,this);
                 break;
             case "2":
                 //VentanaBaja vb=new VentanaBaja(db,this);

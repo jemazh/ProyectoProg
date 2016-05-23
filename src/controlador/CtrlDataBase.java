@@ -7,10 +7,12 @@ package controlador;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import modelo.Socio;
 import oracle.jdbc.driver.OracleDriver;
 
 /**
@@ -61,19 +63,40 @@ public class CtrlDataBase {
             System.out.println(e.getMessage());
         }
     }
-    
-        public int ejecutaUpdate(String statement) {
-        int n = 0;
+        
+    public int ejecutaInsert(Socio s){
+        int n=0;
+        String cadena= "INSERT INTO SOCIOS (ID_SOC,COD_SOC,NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL)"
+                        + "VALUES (COD_SOC_SQ.NEXTVAL,?,?,?,?,?,?)";
+        
         try {
-            Statement st = conexion.createStatement();
-            System.out.println("La sentencia es: " + statement);
-            n = st.executeUpdate(statement);
-            System.out.println("Se ha ejecutado correctamente");
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            st.setInt(1,Integer.parseInt(s.getCod_soc()));
+            st.setString(2,s.getNombre());
+            st.setString(3,s.getApellido());
+            st.setString(4,s.getDni_nif());
+            st.setString(5,s.getDireccion());
+            st.setString(6,s.getTlfMovil());
+            System.out.println("La sentencia es: "+cadena);
+            n=st.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("SQL Exception:\n" + ex.getMessage());
-        }
-        return n;
+            System.out.println("SQL Exception:\n"+ex.getMessage());
+        }        
+        return n;  
     }
+    
+//    public int ejecutaUpdate(String statement) {
+//        int n = 0;
+//        try {
+//            Statement st = conexion.createStatement();
+//            System.out.println("La sentencia es: " + statement);
+//            n = st.executeUpdate(statement);
+//            System.out.println("Se ha ejecutado correctamente");
+//        } catch (SQLException ex) {
+//            System.out.println("SQL Exception:\n" + ex.getMessage());
+//        }
+//        return n;
+//    }
 
 //    public ResultSet ejecutaConsulta(String consulta) {
 //        Statement st = null;

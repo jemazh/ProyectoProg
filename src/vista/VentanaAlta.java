@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import modelo.Socio;
 
 /**
  *
@@ -58,12 +59,14 @@ public class VentanaAlta extends JFrame implements ActionListener {
         inner.setLayout(new GridLayout(textEtiqTipoLong.length,2,5,5));
         campo=new JTextField[textEtiqTipoLong.length];
         JLabel [] etiquetaCampo=new JLabel[textEtiqTipoLong.length];
-        
+                   
         for (int i = 0; i < textEtiqTipoLong.length; i++) {
+            etiquetaCampo[i]=new JLabel();
+            campo[i]=new JTextField();
             etiquetaCampo[i].setText(textEtiqTipoLong[i][0]);
             inner.add(etiquetaCampo[i]);
             inner.add(campo[i]);            
-        }   
+        }
         return inner;
     }
     
@@ -86,8 +89,10 @@ public class VentanaAlta extends JFrame implements ActionListener {
      }
     
     private void initComponents() {
+        
         JLabel mensaje=new JLabel("Los campos con Asterisco son obligatorios",SwingConstants.CENTER);
-        mensaje.setFont(new Font("Courier", Font.BOLD, 24));
+        mensaje.setFont(new Font("Courier", Font.ITALIC, 12));
+        mensaje.setForeground(Color.red);
         
         contenedor=(JPanel) this.getContentPane();          
         contenedor.setLayout(new BorderLayout());
@@ -101,6 +106,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
     private void limpiaPantalla() {
         for (int i = 0; i < campo.length; i++) {
             campo[i].setText(null);
+            campo[i].setBackground(Color.white);
         }
     }
     
@@ -111,7 +117,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
     private boolean datosCorrectos(){
         boolean correcto=true;
         
-        for (int i = 0; i < textEtiqTipoLong.length; i++) {            
+        for (int i = 0; i < textEtiqTipoLong.length; i++) { 
             
             if (!compruebaDatos(textEtiqTipoLong[i],campo[i].getText())){
                 campo[i].setBackground(Color.yellow);
@@ -120,14 +126,15 @@ public class VentanaAlta extends JFrame implements ActionListener {
                 campo[i].setBackground(Color.white);
             }
             
-        }     
+        }
+        
         return correcto;
     }
     
     private boolean compruebaDatos(String [] dato, String valor){
         boolean correcto;
             
-        switch (dato[0]){
+        switch (dato[1]){
             case "NUMERIC":
                 correcto=compruebaEntPositivo(dato,valor);
                 break;
@@ -177,21 +184,6 @@ public class VentanaAlta extends JFrame implements ActionListener {
         }
         return correcto;
     }
-            
-//    private void alta(){
-//        //Creo un objeto de la clase persona, pero lo instancio como
-//        //alumno, de esta manera
-//        if (compruebaCadena20(nombre.getText())){           
-//            //lo guardo en la base de datos
-//            if (db.ejecutaInsert(nombre.getText())>0){
-//                ventanaInfo("Alumno dado de Alta!!!");
-//            }
-//        }else{
-//            ventanaError("El nombre tiene que tener entre 1 y 20 caracteres.");
-//        }
-//        limpiaPantalla();
-//    }
-    
 
     private void ventanaError(String cadena) {
         JOptionPane.showMessageDialog(
@@ -203,8 +195,18 @@ public class VentanaAlta extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         switch(e.getActionCommand()){
             case "alta":
-                //alta();
-                //db.recorreResultado(db.ejecutaConsulta("Select * from alumnos"));
+                if (datosCorrectos()){
+                    Socio s=new Socio(campo);
+                    if (db.ejecutaInsert(s)>0){
+                        limpiaPantalla();
+                        ventanaInfo("Socio dado de Alta!!!");
+                    }else{
+                        campo[0].setBackground(Color.yellow);
+                        ventanaError("Datos incorrectos (Codigo tiene que ser único)");
+                    }                   
+                }else{
+                    ventanaError("Datos incorrectos");
+                }
                 break;
             case "cancelar":
                 padre.setVisible(true);
