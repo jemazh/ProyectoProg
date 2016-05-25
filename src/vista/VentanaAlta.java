@@ -141,6 +141,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
             case "VARCHAR":
                 correcto=compruebaCadena(dato,valor);
                 break;
+                
             default:
                 correcto=false;
                 break;

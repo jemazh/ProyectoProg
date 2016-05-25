@@ -85,6 +85,21 @@ public class CtrlDataBase {
         return n;  
     }
     
+    public int ejecutaDelete(String nombre){
+        int n=0;
+        String cadena= "DELETE ON CASCADE FROM SOCIOS WHERE COD_SOC = ?";
+        
+        try {
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            st.setString(1,nombre);
+            System.out.println("La sentencia es: "+cadena);
+            n=st.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n"+ex.getMessage());
+        }        
+        return n;  
+    }
+    
 //    public int ejecutaUpdate(String statement) {
 //        int n = 0;
 //        try {

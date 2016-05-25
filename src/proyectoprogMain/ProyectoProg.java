@@ -21,7 +21,7 @@ public class ProyectoProg {
         String servidor = "jdbc:oracle:thin:@localhost:";
         String bd = "1521:xe";
         String user = "damlocal";
-        String password = "maradiaga";
+        String password = "case";
         
         CtrlDataBase db = new CtrlDataBase(bd, user, password, servidor);
         
