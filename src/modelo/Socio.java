@@ -27,11 +27,12 @@ public class Socio {
     public Socio(String cod_soc, String nombre, String apellido, String dni_nif, 
                  String direccion, String tlfMovil) {
         this.cod_soc = cod_soc;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni_nif = dni_nif;
-        this.direccion = direccion;
-        this.tlfMovil = tlfMovil;      
+        this.nombre = nombre.toUpperCase();
+        this.apellido = apellido.toUpperCase();
+        this.dni_nif = dni_nif.toUpperCase();
+        this.direccion = direccion.toUpperCase();
+        this.tlfMovil = tlfMovil.toUpperCase();
+        corrigeEspacios();
     }
     
     public Socio(JTextField [] c){
@@ -82,9 +83,5 @@ public class Socio {
     public String getTlfMovil() {
         return tlfMovil;
     }
-    
-    
-    
-    
     
 }

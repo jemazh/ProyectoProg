@@ -17,8 +17,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import modelo.Socio;
 
 /**
  *
@@ -76,6 +78,17 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         
     }
     
+    public String preguntaCodigo(){
+        String seleccion = JOptionPane.showInputDialog(this,
+                                               "Introduce codigo del socio");
+        
+        System.out.println("El usuario ha escrito "+seleccion);
+        return seleccion;
+    }
+    
+    private void ventanaInfo(String cadena){
+        JOptionPane.showMessageDialog(this,cadena);
+    }
     
     /**
      * ToDo
@@ -96,7 +109,12 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 VentanaBaja vb=new VentanaBaja(db,this);
                 break;
             case "3":
-                //VentanaListado vl=new VentanaListado(db.ejecutaConsulta("SELECT * from alumnos"));
+                Socio soc=db.buscaSocio(preguntaCodigo());
+                if (soc!=null){
+                    VentanaModificar vl=new VentanaModificar(db,this,soc);
+                }else{
+                    ventanaInfo("No existe socio con ese CODIGO");
+                }               
                 break;                
             case "4":
                 //VentanaPNota vp=new VentanaPNota(db,this);

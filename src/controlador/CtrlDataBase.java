@@ -85,6 +85,32 @@ public class CtrlDataBase {
         return n;  
     }
     
+        public int ejecutaUpdate(Socio s){
+        int n=0;
+        String cadena= "UPDATE SOCIOS (NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL)"
+                     + "SET NOMBRE = ?,"
+                         + "APELLIDOS = ?,"
+                         + "DNI_NIF = ?,"
+                         + "DIRECCION = ?,"
+                         + "TELEFONO_MOVIL = ?"
+                     + "WHERE COD_SOC = ?";
+        
+        try {
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            st.setString(1,s.getNombre());
+            st.setString(2,s.getApellido());
+            st.setString(3,s.getDni_nif());
+            st.setString(4,s.getDireccion());
+            st.setString(5,s.getTlfMovil());
+            st.setInt(6,Integer.parseInt(s.getCod_soc()));
+            System.out.println("La sentencia es: "+cadena);
+            n=st.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n"+ex.getMessage());
+        }        
+        return n;  
+    }
+    
     public int ejecutaDelete(String codigo){
         int n=0;
         String cadena= "DELETE ON CASCADE FROM SOCIOS WHERE COD_SOC = ?";
@@ -102,18 +128,48 @@ public class CtrlDataBase {
         return n;  
     }
     
-//    public int ejecutaUpdate(String statement) {
-//        int n = 0;
-//        try {
-//            Statement st = conexion.createStatement();
-//            System.out.println("La sentencia es: " + statement);
-//            n = st.executeUpdate(statement);
-//            System.out.println("Se ha ejecutado correctamente");
-//        } catch (SQLException ex) {
-//            System.out.println("SQL Exception:\n" + ex.getMessage());
-//        }
-//        return n;
-//    }
+    private Socio creaSocio(ResultSet r) throws SQLException{
+        String cod_soc=r.getString(1);
+        String nombre=r.getString(2);
+        String apellido=r.getString(3);
+        String dnif=r.getString(4);
+        String direccion=r.getString(5);
+        String tlfMovil=r.getString(6);
+        Socio s=new Socio(cod_soc,nombre,apellido,dnif,direccion,tlfMovil);
+        
+        return null;
+    }
+    
+    public Socio buscaSocio(String codigo) {
+        Socio s=null;
+        String cadena= "SELECT COD_SOC,NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL"
+                     + "FROM SOCIOS"
+                     + "WHERE COD_SOC = ? ";
+                      
+        try {
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            st.setInt(1, Integer.parseInt(codigo));
+            
+            System.out.println("La sentencia es: "+cadena);
+            
+            ResultSet rs=st.executeQuery();
+            
+            if (rs.first()){
+                rs.beforeFirst();
+                s=creaSocio(rs);  //capturo aqui la Exception
+                rs.close();
+            }else{
+                System.out.println("CtrlDatabase.buscaSocio() ->El resultSet esta vacio");
+            }
+                
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n"+ex.getMessage());
+        } catch (NumberFormatException e){
+            System.out.println("NumberFormatException: \n"+e.getMessage());
+        }       
+        return s;  
+    }
+    
 
 //    public ResultSet ejecutaConsulta(String consulta) {
 //        Statement st = null;

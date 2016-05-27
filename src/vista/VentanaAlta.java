@@ -54,7 +54,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
         this.setSize(300, 300);
     }
     
-    private JComponent addCampos(){
+    protected JComponent addCampos(){
         
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(textEtiqTipoLong.length,2,5,5));
@@ -71,7 +71,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return inner;
     }
     
-     private JComponent addBotones(){
+     protected JComponent addBotones(){
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(1,2,5,5));
         
@@ -89,7 +89,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return inner;
      }
     
-    private void initComponents() {
+    protected void initComponents() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         JLabel mensaje=new JLabel("Los campos con Asterisco son obligatorios",SwingConstants.CENTER);
         mensaje.setFont(new Font("Courier", Font.ITALIC, 12));
@@ -104,18 +104,18 @@ public class VentanaAlta extends JFrame implements ActionListener {
 
     }
 
-    private void limpiaPantalla() {
+    protected void limpiaPantalla() {
         for (int i = 0; i < campo.length; i++) {
             campo[i].setText(null);
             campo[i].setBackground(Color.white);
         }
     }
     
-    private void ventanaInfo(String cadena){
+    protected void ventanaInfo(String cadena){
         JOptionPane.showMessageDialog(this,cadena);
     }
     
-    private boolean datosCorrectos(){
+    protected boolean datosCorrectos(){
         boolean correcto=true;
         
         for (int i = 0; i < textEtiqTipoLong.length; i++) { 
@@ -132,7 +132,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return correcto;
     }
     
-    private boolean compruebaDatos(String [] dato, String valor){
+    protected boolean compruebaDatos(String [] dato, String valor){
         boolean correcto;
             
         switch (dato[1]){
@@ -152,7 +152,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
     }    
     
     // si NO es obligatorio y esta vacio devolvemos "true"
-    private boolean compruebaEntPositivo(String [] dato, String valor) {
+    protected boolean compruebaEntPositivo(String [] dato, String valor) {
         boolean correcto=true;
  
         if ((dato[0].contains("*"))&&(valor.replaceAll(" ","").isEmpty())){
@@ -174,7 +174,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return correcto;
     }
     
-    private boolean compruebaCadena(String [] dato, String valor){
+    protected boolean compruebaCadena(String [] dato, String valor){
         boolean correcto=true;
  
         if ((dato[0].contains("*"))&&(valor.replaceAll(" ","").isEmpty())){
@@ -187,28 +187,32 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return correcto;
     }
 
-    private void ventanaError(String cadena) {
+    protected void ventanaError(String cadena) {
         JOptionPane.showMessageDialog(
                 this, cadena,
                 "Error", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    protected void alta(){
+        if (datosCorrectos()){
+            Socio s=new Socio(campo);
+            if (db.ejecutaInsert(s)>0){
+                limpiaPantalla();
+                ventanaInfo("Socio dado de Alta!!!");
+            }else{
+                campo[0].setBackground(Color.yellow);
+                ventanaError("Datos incorrectos (Codigo tiene que ser único)");
+            }                   
+        }else{
+            ventanaError("Datos incorrectos");
+        }     
     }
     
     @Override
     public void actionPerformed(ActionEvent e){
         switch(e.getActionCommand()){
             case "alta":
-                if (datosCorrectos()){
-                    Socio s=new Socio(campo);
-                    if (db.ejecutaInsert(s)>0){
-                        limpiaPantalla();
-                        ventanaInfo("Socio dado de Alta!!!");
-                    }else{
-                        campo[0].setBackground(Color.yellow);
-                        ventanaError("Datos incorrectos (Codigo tiene que ser único)");
-                    }                   
-                }else{
-                    ventanaError("Datos incorrectos");
-                }
+                alta();
                 break;
             case "cancelar":
                 padre.setVisible(true);
