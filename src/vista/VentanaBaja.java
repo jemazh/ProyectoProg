@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.CtrlDataBase;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +24,8 @@ import javax.swing.JTextField;
 public class VentanaBaja extends JFrame implements ActionListener{
     JPanel contenedor;
     JButton botonAlta, botonCancelar;
-    JTextField nombre;
-    JLabel etiquetaNombre;
+    JTextField codigo;
+    JLabel etiquetaCodigo;
     CtrlDataBase db;
     JFrame padre;
     
@@ -36,17 +37,18 @@ public class VentanaBaja extends JFrame implements ActionListener{
         this.setVisible(true);
         initComponents();
         this.pack();
-        this.setSize(300, 300);
+        this.setSize(300, 100);
     }
 
     private void initComponents() {
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         //Utilizo todo el fondo del JFrame
         contenedor = (JPanel) this.getContentPane();
         //Inicializo un layout
         contenedor.setLayout(new GridLayout(2, 2, 5, 5));
         //Inicializo los objetos
-        etiquetaNombre = new JLabel("Codigo: ");
-        nombre = new JTextField();
+        etiquetaCodigo = new JLabel("Codigo: ");
+        codigo = new JTextField();
         botonAlta = new JButton("Baja");
         botonAlta.addActionListener(this);
         botonAlta.setActionCommand("baja");
@@ -54,31 +56,29 @@ public class VentanaBaja extends JFrame implements ActionListener{
         botonCancelar.addActionListener(this);
         botonCancelar.setActionCommand("cancelar");
         //los pongo en el contendor
-        contenedor.add(etiquetaNombre);
-        contenedor.add(nombre);
+        contenedor.add(etiquetaCodigo);
+        contenedor.add(codigo);
         contenedor.add(botonAlta);
         contenedor.add(botonCancelar);
     }
 
     private void limpiaPantalla() {
-        nombre.setText(null);
+        codigo.setText(null);
+        codigo.setBackground(Color.white);
     }
     
     private void ventanaInfo(String cadena){
         JOptionPane.showMessageDialog(this,cadena);
     }
-    
-    private boolean compruebaCadena20(String cadena){
-        return cadena.length() > 0 && cadena.length() <=20;
-    }
-            
+                
     private void baja(){            
-            if (db.ejecutaDelete(nombre.getText())>0){
-                ventanaInfo("Socios eliminados");
+            if (db.ejecutaDelete(codigo.getText())>0){
+                ventanaInfo("Socio eliminado");
+                limpiaPantalla();
             }else{
+                codigo.setBackground(Color.yellow);
                 ventanaError("No existen Socios con ese código");
             }
-        limpiaPantalla();
     }
     
 

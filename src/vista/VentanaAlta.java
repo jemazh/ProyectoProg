@@ -212,7 +212,6 @@ public class VentanaAlta extends JFrame implements ActionListener {
             case "cancelar":
                 padre.setVisible(true);
                 this.dispose();
-                //db.recorreResultado(db.ejecutaConsulta("Select * from alumnos"));
                 break;    
             default:
                 padre.setVisible(true);

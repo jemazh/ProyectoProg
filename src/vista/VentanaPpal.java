@@ -93,7 +93,7 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 VentanaAlta va=new VentanaAlta(db,this);
                 break;
             case "2":
-                //VentanaBaja vb=new VentanaBaja(db,this);
+                VentanaBaja vb=new VentanaBaja(db,this);
                 break;
             case "3":
                 //VentanaListado vl=new VentanaListado(db.ejecutaConsulta("SELECT * from alumnos"));
