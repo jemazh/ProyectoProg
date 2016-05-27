@@ -32,6 +32,7 @@ public class VentanaBaja extends JFrame implements ActionListener{
     public VentanaBaja(CtrlDataBase db,JFrame padre) {
         this.padre=padre;
         padre.setVisible(false);
+        this.setLocation(padre.getLocation());
         this.db=db;
         this.setTitle("Baja socio");
         this.setVisible(true);

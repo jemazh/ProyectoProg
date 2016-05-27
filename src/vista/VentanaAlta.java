@@ -45,6 +45,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
     public VentanaAlta(CtrlDataBase db,JFrame padre) {
         this.padre=padre;
         padre.setVisible(false);
+        this.setLocation(padre.getLocation());
         this.db=db;
         this.setTitle("Alta Socio");
         this.setVisible(true);
@@ -89,7 +90,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
      }
     
     private void initComponents() {
-        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         JLabel mensaje=new JLabel("Los campos con Asterisco son obligatorios",SwingConstants.CENTER);
         mensaje.setFont(new Font("Courier", Font.ITALIC, 12));
         mensaje.setForeground(Color.red);
