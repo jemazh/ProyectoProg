@@ -28,23 +28,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VentanaListado extends JFrame implements ActionListener {
     JPanel contenedor;
-    JTable tabla;
     JTextField campo;
     JLabel etiquetaBuscar;
     JButton bBuscar,bCancelar;
     JFrame padre;
     JButton [] botonLista;
     CtrlDataBase db;
-    ArrayList lista;
     DefaultTableModel modelo;
     
-    //ResultSet r;
-//    String [][] tBusqueda;
-    
-    public VentanaListado(CtrlDataBase db,JFrame j,ArrayList l){
+    public VentanaListado(CtrlDataBase db,JFrame j){
         this.padre=j;
         this.db=db;
-        this.lista=l;
         this.setLocation(j.getLocation());
         this.setTitle("Listados");
         this.setVisible(true);
@@ -165,14 +159,8 @@ public class VentanaListado extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(this,cadena);
     }
     
-    protected void busqueda(){ //ToDo  para heredar ver: Socio soc=db.buscaSocio(preguntaCodigo())
-//        ArrayList soc=db.listaSocios();
-//        if (soc.isEmpty()){
-//            ventanaInfo("No existe ningun socio");
-//        }else{
-//            ListadoSocio mp= new ListadoSocio(db,padre,soc);
-//            this.dispose();
-//        } 
+    protected void muestraLista(){ //creado para heredarlo
+
     }
     
 
@@ -180,22 +168,12 @@ public class VentanaListado extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         switch(ae.getActionCommand()){
             case "Listado Socios":
-                ArrayList soc=db.listaSocios();
-                if (soc.isEmpty()){
-                    ventanaInfo("No existe ningun socio");
-                }else{
-                    ListadoSocio mp= new ListadoSocio(db,padre,soc);
-                    this.dispose();
-                } 
+                ListadoSocio mp= new ListadoSocio(db,padre);
+                this.dispose(); 
                 break;                      
             case "Listado Actividades":
-                ArrayList act=db.listaActividad();
-                if (act.isEmpty()){
-                    ventanaInfo("No existe ninguna Actividad");
-                }else{
-                    ListadoActividad ap= new ListadoActividad(db,padre,act);
-                    this.dispose();
-                } 
+                ListadoActividad ap= new ListadoActividad(db,padre);
+                this.dispose();
                 break;  
             case "Listado Facturas":
                 ArrayList fact=db.listaFactura();
@@ -207,7 +185,7 @@ public class VentanaListado extends JFrame implements ActionListener {
                 }
                 break;     
             case "Buscar":
-                busqueda();
+                muestraLista();
                 break;
             case "Cancelar":
                 padre.setVisible(true);

@@ -87,7 +87,7 @@ public class Socio {
         return tlfMovil;
     }
 
-    public static String[] getCabeceras() {
+    public static String[] getCabecera() {
         return cabecera;
     }
     

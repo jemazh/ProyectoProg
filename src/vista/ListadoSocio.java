@@ -16,21 +16,26 @@ import modelo.Socio;
  * @author Mario
  */
 public class ListadoSocio extends VentanaListado{
+    ArrayList <Socio> lista;
 
-    ListadoSocio(CtrlDataBase db, JFrame padre, ArrayList socios) {
-        super(db,padre,socios);
-        
+    ListadoSocio(CtrlDataBase d, JFrame padre) {
+        super(d,padre);
+        this.lista=db.listaSocios();
+    }
+    
+    ListadoSocio(CtrlDataBase d, JFrame padre,ArrayList <Socio> s) {
+        super(d,padre);
+        this.lista=s;
     }
     
     @Override
     public void cabeceras(){
-        String [] c=Socio.getCabeceras();
+        String [] c=Socio.getCabecera();
         
         for (int i = 0; i < c.length; i++) {
             modelo.addColumn(c[i]);
         }
-    }
-    
+    }   
     
     @Override
     public void muestraFilas(){        
@@ -47,19 +52,31 @@ public class ListadoSocio extends VentanaListado{
     public void bloquea(){     
         campo.setEnabled(true);
         bBuscar.setEnabled(true);
-        etiquetaBuscar.setText("COD_SOC");
+        etiquetaBuscar.setText("COD_SOC :");
     }
     
-    @Override
-    protected void busqueda(){ //toDo hacer la busqueda sobre el ArrayList
-        Socio soc=db.buscaSocio(campo.getText());
-        if (soc!=null){
-            ArrayList a= new ArrayList();
-            a.add(soc);
-            ListadoSocio mp= new ListadoSocio(db,padre,a);
-        }else{
-            ventanaInfo("No existe socio con ese CODIGO");
-        }               
+    public ArrayList buscar(String dato) {
+        ArrayList <Socio> listaCompleta=db.listaSocios();
+        ArrayList <Socio> arry=new ArrayList();
         
+        for (Socio s: listaCompleta){
+            if (s.getCod_soc().equals(dato)){
+                arry.add(s);
+            }    
+        }
+        return arry;
+    } 
+    
+    
+    @Override
+    protected void muestraLista(){ 
+        ArrayList <Socio> soc=buscar(campo.getText());
+        
+        if (soc.isEmpty()){
+            ventanaInfo("No existe socio con ese CODIGO");
+        }else{
+            ListadoSocio mp= new ListadoSocio(db,padre,soc);
+            this.dispose();
+        }       
     }
 }

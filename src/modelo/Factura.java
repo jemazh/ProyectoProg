@@ -35,5 +35,10 @@ public class Factura {
         array[4]=cod_soc;
         return array;
     }
+
+    public static String[] getCabecera() {
+        return cabecera;
+    }
    
+    
 }

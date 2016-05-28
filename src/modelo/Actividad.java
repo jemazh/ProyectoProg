@@ -39,6 +39,17 @@ public class Actividad {
         array[5]=cod_soc;
         return array;
     }
-    
-    
+
+    public static String[] getCabecera() {
+        return cabecera;
+    }
+
+    public String getId_act() {
+        return id_act;
+    }
+
+    public String getCod_soc() {
+        return cod_soc;
+    }
+     
 }

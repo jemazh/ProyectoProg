@@ -118,8 +118,7 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 }               
                 break;                
             case "4":
-                ArrayList lista=new ArrayList();
-                VentanaListado vp=new VentanaListado(db,this,lista);
+                VentanaListado vp=new VentanaListado(db,this);
                 break;
             case "5":
                 //VentanaBorrarSus va=new VentanaBorrarSus(db,this);
