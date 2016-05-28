@@ -5,10 +5,18 @@
  */
 package vista;
 
+import controlador.CtrlDataBase;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Mario
  */
-public class ListadoFactura {
+public class ListadoFactura extends VentanaListado{
+
+    ListadoFactura(CtrlDataBase db, JFrame padre, ArrayList fact) {
+        super(db,padre,fact);
+    }
     
 }

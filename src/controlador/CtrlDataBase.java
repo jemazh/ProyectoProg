@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import modelo.Actividad;
+import modelo.Factura;
 import modelo.Socio;
 import oracle.jdbc.driver.OracleDriver;
 
@@ -127,14 +129,14 @@ public class CtrlDataBase {
         return n;  
     }
     
-    private String compruebaNull(String s){       
-        if (s==null){
-            s="";
+    private String compruebaNull(String dato){       
+        if (dato==null){
+            dato="";
         }       
-        return s;
+        return dato;
     }
     
-    private ArrayList<Socio> toArrayList(ResultSet r) throws SQLException{
+    private ArrayList<Socio> toArrayListSocios(ResultSet r) throws SQLException{
         ArrayList <Socio> arry=new ArrayList();
         
         while(r.next()){
@@ -149,18 +151,34 @@ public class CtrlDataBase {
         return arry;
     }
     
-//    public void pasarDatos(ResultSet rs, ArrayList voluntarios){
-//        try {
-//            while (rs.next()) {
-//                Voluntario v1= new Voluntario(rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5));
-//                v1.setTelefono(rs.getString(7));
-//                v1.setHorasDedicadas(Integer.parseInt(rs.getString(10)));
-//                voluntarios.add(v1);
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("Error sql: " + ex.getMessage());
-//        }
-//    }
+    private ArrayList<Actividad> toArrayListActividad(ResultSet r) throws SQLException{
+        ArrayList <Actividad> arry=new ArrayList();
+        
+        while(r.next()){
+            String id_act=compruebaNull(r.getString(1));
+            String nombre=compruebaNull(r.getString(2));
+            String fecha=compruebaNull(r.getString(3));
+            String monitor=compruebaNull(r.getString(4));
+            String capacidad=compruebaNull(r.getString(5));
+            String cod_soc=compruebaNull(r.getString(6));
+            arry.add(new Actividad(id_act,nombre,fecha,monitor,capacidad,cod_soc));
+        }
+        return arry;
+    }
+    
+    private ArrayList<Factura> toArrayListFactura(ResultSet r) throws SQLException{
+        ArrayList <Factura> arry=new ArrayList();
+        
+        while(r.next()){
+            String id_fact=compruebaNull(r.getString(1));
+            String fecha=compruebaNull(r.getString(2));
+            String cabecera=compruebaNull(r.getString(3));
+            String total=compruebaNull(r.getString(4));
+            String cod_soc=compruebaNull(r.getString(5));
+            arry.add(new Factura(id_fact,fecha,cabecera,total,cod_soc));
+        }
+        return arry;
+    }
     
     public Socio buscaSocio(String codigo) {
         Socio s=null;
@@ -176,7 +194,7 @@ public class CtrlDataBase {
             
             ResultSet rs=st.executeQuery();
             
-            s=toArrayList(rs).get(0);
+            s=toArrayListSocios(rs).get(0);
                 
         } catch (SQLException ex) {
             System.out.println("SQL Exception:\n"+ex.getMessage());
@@ -186,83 +204,77 @@ public class CtrlDataBase {
         return s;  
     }
     
-
-//    public ResultSet ejecutaConsulta(String consulta) {
-//        Statement st = null;
-//        ResultSet rs = null;
-//        try {
-//            st = conexion.createStatement();
-//            rs = st.executeQuery(consulta);
-//        } catch (SQLException ex) {
-//            System.out.println("Error sql: " + ex.getMessage());
-//        }
-////        try {
-////            st.close();
-////        } catch (SQLException ex) {
-////            System.out.println("Error sql: " + ex.getMessage());
-////        }
-//        return rs;
-//    }
-
-//    public boolean buscaRegistro(String dniBuscar) {
-//        ResultSet rs;
-//        /*
-//        Directamente la consulta sería así
-//        rs=db.ejecutaConsulta("SELECT * from alumnos where nombre='" + nombre.getText()+"';");
-//        Creo un String con la consulta para ver por consola la inyección de código
-//        probaremos poniendo en el nombre: Pepe' or 1='1
-//         */
-//        String sentencia = "SELECT * from voluntario where dni='" + dniBuscar + "';";
-//        System.out.println(sentencia);
-//        rs = ejecutaConsulta(sentencia);
-//        try {
-//            //VIP primero compruebo que rs no es nullo, si lo es, lo segundo no se ejecuta
-//            if (rs != null) {
-//                if (rs.isBeforeFirst()) {
-//                    
-////                    VentanaListado vL = new VentanaListado(rs);
-//                } else {
-//                    return false;
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("Error con la base de datos: " + ex.getMessage());
-//        }
-//        return true; //aunque puede ser que se haya producido la excepción.  contamos conn el mensaje
-//    }
-//
-//    public void cierraResultSet(ResultSet rs) {
-//        try {
-//            //cerramos el rs. porque garbage no puede eliminar el heap
-//            rs.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Error con la base de datos: " + ex.getMessage());
-//        }
-//    }
-
-//    public void recorreResultado(ResultSet rs) {
-//        try {
-//            while (rs.next()) {
-//                System.out.println(rs.getString(1) + "\t" + rs.getString(2) + "\t" + rs.getString(3)
-//                        + "\t" + rs.getString(4) + "\t" + rs.getString(5) + "\t" + rs.getString(6)
-//                 + "\t" + rs.getString(7) + "\t" + rs.getString(8) + "\t" + rs.getString(9)
-//                 + "\t" + rs.getString(10));
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("Error sql: " + ex.getMessage());
-//        }
-//    }
+    public ArrayList<Socio> listaSocios() { 
+        ArrayList arry=new ArrayList();
+        
+        String cadena= "SELECT COD_SOC,NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL"
+                     + " FROM SOCIOS"
+                     + " ORDER BY 2";
+        
+        try {
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            
+            System.out.println("La sentencia es: "+cadena);
+            
+            ResultSet rs=st.executeQuery();
+            
+            arry=toArrayListSocios(rs);
+                
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n"+ex.getMessage());    
+        }       
+        return arry;  
+    }
     
-//    public void pasarDatos(ResultSet rs, ArrayList voluntarios){
-//        try {
-//            while (rs.next()) {
-//                Voluntario v1= new Voluntario(rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5));
-//                v1.setTelefono(rs.getString(7));
-//                v1.setHorasDedicadas(Integer.parseInt(rs.getString(10)));
-//                voluntarios.add(v1);
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println("Error sql: " + ex.getMessage());
-//        }
-//    }
+    public ArrayList listaActividad() { 
+        ArrayList arry=new ArrayList();
+        
+        String cadena= "SELECT C.ID_ACTIVIDAD,C.NOMBRE_ACTIVIDAD,C.FECHA_INICIO,"
+                           + " C.PERSONA_IMPARTE,C.CAPACIDAD,S.COD_SOC"
+                     + " FROM CURSA C JOIN ACTIVIDAD A"
+                     + " ON (C.ID_ACTIVIDAD = A.ID_ACTIVIDAD)"
+                     + " JOIN SOCIOS S"
+                     + " ON (C.ID_SOC = S.ID_SOC)"
+                     + " ORDER BY 1";
+        
+        try {
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            
+            System.out.println("La sentencia es: "+cadena);
+            
+            ResultSet rs=st.executeQuery();
+            
+            arry=toArrayListActividad(rs);
+                
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n"+ex.getMessage());    
+        }       
+        return arry; 
+         
+    }
+    
+    public ArrayList listaFactura() { 
+        ArrayList arry=new ArrayList(); 
+               
+        String cadena = "SELECT F.ID_FACTURA,F.FECHA_FACTURA,F.CABECERA_FACTURA,"
+                           +  " F.TOTAL,S.COD_SOC"
+                    + " FROM FACTURA F JOIN SOCIOS S"
+                    + " ON (F.SOCIOS_ID_SOC = S.ID_SOC)"
+                    + " ORDER BY 1";
+        
+        try {
+            PreparedStatement st=conexion.prepareStatement(cadena);
+            
+            System.out.println("La sentencia es: "+cadena);
+            
+            ResultSet rs=st.executeQuery();
+            
+            arry=toArrayListFactura(rs);
+                
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception:\n"+ex.getMessage());    
+        }       
+        return arry; 
+    }
+
 }

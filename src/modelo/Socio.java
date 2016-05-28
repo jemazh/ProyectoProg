@@ -14,6 +14,9 @@ public class Socio {
     private String dni_nif;
     private String direccion;
     private String tlfMovil;
+    
+    static String [] cabecera={"COD_SOC","NOMBRE","APELLIDOS","DNI/NIF",
+                                "DIRECCION","TELEFONO MOVIL"};
 
     /**
      * 
@@ -45,12 +48,12 @@ public class Socio {
         corrigeEspacios();
     }
     
-    private void corrigeEspacios(){    // toDo
+    private void corrigeEspacios(){    // toDo elimina los espacios al principio
         
     }
     
-    public String [] getArraySocio(){
-        String[] array=new String[4];
+    public String [] getArray(){
+        String[] array=new String[cabecera.length];
         array[0]=cod_soc;
         array[1]=nombre;
         array[2]=apellido;
@@ -83,5 +86,10 @@ public class Socio {
     public String getTlfMovil() {
         return tlfMovil;
     }
+
+    public static String[] getCabeceras() {
+        return cabecera;
+    }
+    
     
 }

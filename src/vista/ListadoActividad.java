@@ -5,10 +5,19 @@
  */
 package vista;
 
+import controlador.CtrlDataBase;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Mario
  */
-public class ListadoActividad {
+public class ListadoActividad extends VentanaListado{
+
+    ListadoActividad(CtrlDataBase db, JFrame padre, ArrayList act) {
+        super(db,padre,act);
+        
+    }
     
 }

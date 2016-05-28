@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -117,7 +118,8 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 }               
                 break;                
             case "4":
-                //VentanaPNota vp=new VentanaPNota(db,this);
+                ArrayList lista=new ArrayList();
+                VentanaListado vp=new VentanaListado(db,this,lista);
                 break;
             case "5":
                 //VentanaBorrarSus va=new VentanaBorrarSus(db,this);
