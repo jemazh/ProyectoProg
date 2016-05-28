@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import modelo.Socio;
 import oracle.jdbc.driver.OracleDriver;
@@ -87,13 +86,13 @@ public class CtrlDataBase {
     
         public int ejecutaUpdate(Socio s){
         int n=0;
-        String cadena= "UPDATE SOCIOS (NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL)"
-                     + "SET NOMBRE = ?,"
-                         + "APELLIDOS = ?,"
-                         + "DNI_NIF = ?,"
-                         + "DIRECCION = ?,"
-                         + "TELEFONO_MOVIL = ?"
-                     + "WHERE COD_SOC = ?";
+        String cadena= "UPDATE SOCIOS"
+                     + " SET NOMBRE = ?,"
+                         + " APELLIDOS = ?,"
+                         + " DNI_NIF = ?,"
+                         + " DIRECCION = ?,"
+                         + " TELEFONO_MOVIL = ?"
+                     + " WHERE COD_SOC = ?";
         
         try {
             PreparedStatement st=conexion.prepareStatement(cadena);
@@ -113,7 +112,7 @@ public class CtrlDataBase {
     
     public int ejecutaDelete(String codigo){
         int n=0;
-        String cadena= "DELETE ON CASCADE FROM SOCIOS WHERE COD_SOC = ?";
+        String cadena= "DELETE FROM SOCIOS WHERE COD_SOC = ?";
         
         try {
             PreparedStatement st=conexion.prepareStatement(cadena);
@@ -128,23 +127,46 @@ public class CtrlDataBase {
         return n;  
     }
     
-    private Socio creaSocio(ResultSet r) throws SQLException{
-        String cod_soc=r.getString(1);
-        String nombre=r.getString(2);
-        String apellido=r.getString(3);
-        String dnif=r.getString(4);
-        String direccion=r.getString(5);
-        String tlfMovil=r.getString(6);
-        Socio s=new Socio(cod_soc,nombre,apellido,dnif,direccion,tlfMovil);
-        
-        return null;
+    private String compruebaNull(String s){       
+        if (s==null){
+            s="";
+        }       
+        return s;
     }
+    
+    private ArrayList<Socio> toArrayList(ResultSet r) throws SQLException{
+        ArrayList <Socio> arry=new ArrayList();
+        
+        while(r.next()){
+            String cod_soc=compruebaNull(r.getString(1));
+            String nombre=compruebaNull(r.getString(2));
+            String apellido=compruebaNull(r.getString(3));
+            String dnif=compruebaNull(r.getString(4));
+            String direccion=compruebaNull(r.getString(5));
+            String tlfMovil=compruebaNull(r.getString(6));
+            arry.add(new Socio(cod_soc,nombre,apellido,dnif,direccion,tlfMovil));
+        }
+        return arry;
+    }
+    
+//    public void pasarDatos(ResultSet rs, ArrayList voluntarios){
+//        try {
+//            while (rs.next()) {
+//                Voluntario v1= new Voluntario(rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5));
+//                v1.setTelefono(rs.getString(7));
+//                v1.setHorasDedicadas(Integer.parseInt(rs.getString(10)));
+//                voluntarios.add(v1);
+//            }
+//        } catch (SQLException ex) {
+//            System.out.println("Error sql: " + ex.getMessage());
+//        }
+//    }
     
     public Socio buscaSocio(String codigo) {
         Socio s=null;
         String cadena= "SELECT COD_SOC,NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL"
-                     + "FROM SOCIOS"
-                     + "WHERE COD_SOC = ? ";
+                     + " FROM SOCIOS"
+                     + " WHERE COD_SOC = ? ";
                       
         try {
             PreparedStatement st=conexion.prepareStatement(cadena);
@@ -154,13 +176,7 @@ public class CtrlDataBase {
             
             ResultSet rs=st.executeQuery();
             
-            if (rs.first()){
-                rs.beforeFirst();
-                s=creaSocio(rs);  //capturo aqui la Exception
-                rs.close();
-            }else{
-                System.out.println("CtrlDatabase.buscaSocio() ->El resultSet esta vacio");
-            }
+            s=toArrayList(rs).get(0);
                 
         } catch (SQLException ex) {
             System.out.println("SQL Exception:\n"+ex.getMessage());

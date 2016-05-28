@@ -41,8 +41,8 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     
     public JComponent menu(){
         String [] opciones={"Alta socio","Baja socio",
-                            "Modificacion Socio","Crear XML",
-                            "Listados","Fin"};
+                            "Modificacion Socio","Listados",
+                            "Crear XML Socios","Fin"};
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(opciones.length,1,0,10));
         

@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.CtrlDataBase;
+import java.awt.Color;
 import javax.swing.JFrame;
 import modelo.Socio;
 
@@ -33,12 +34,24 @@ public class VentanaModificar extends VentanaAlta {
         campo[5].setText(s.getTlfMovil());   
     }
     
+    /**
+     *
+     */
+    @Override
+    protected void bloqueaCampos(){
+        campo[0].setBackground(new Color(238,238,238));
+    }
+    
     @Override
     protected void alta(){
-        if (datosCorrectos()){
+        if (datosCorrectos()){ 
             Socio s=new Socio(campo);
             if (db.ejecutaUpdate(s)>0){
                 ventanaInfo("Modificación realizada!!!");
+                // si se realizo la modificacion salgo de la ventana 
+                // y regreso al menú principal
+                this.dispose();                        
+                padre.setVisible(true);
             }else{
                 ventanaError("Error en la BD al realizar la modificación");
             }                   

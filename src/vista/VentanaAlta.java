@@ -115,6 +115,9 @@ public class VentanaAlta extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(this,cadena);
     }
     
+    // para poder acceder al COLOR de los campos en caso de heredarlos
+    protected void bloqueaCampos(){}; 
+                                
     protected boolean datosCorrectos(){
         boolean correcto=true;
         
@@ -128,6 +131,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
             }
             
         }
+        bloqueaCampos();
         
         return correcto;
     }
