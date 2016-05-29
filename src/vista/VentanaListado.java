@@ -27,8 +27,9 @@ import modelo.Factura;
 import modelo.Socio;
 
 /**
- *
+ * Ventana que se ejecutará con las diversas opciones del listado
  * @author Mario
+ * @version 27/05/2016
  */
 public class VentanaListado extends JFrame implements ActionListener {
     protected JPanel contenedor;
@@ -42,6 +43,12 @@ public class VentanaListado extends JFrame implements ActionListener {
     protected ArrayList lista;
     protected JTable table;
     
+    /**
+     * Constructor de la Clase VentanaAlta
+     * @param db Conexión a la Base de Datos
+     * @param j Ventana Principal (VentanaPpal)
+     * @param a ArrayList con las clases a Listar 
+     */
     public VentanaListado(CtrlDataBase db,JFrame j,ArrayList a){
         this.lista=a;
         this.padre=j;
@@ -54,7 +61,25 @@ public class VentanaListado extends JFrame implements ActionListener {
         this.pack();
         this.setResizable(false);
     }
-
+    
+    /**
+     * Cuerpo principal de mi ventana
+     */
+    private void initComponents(){
+        
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        contenedor=(JPanel) this.getContentPane();
+          
+        contenedor.setLayout(new BorderLayout());
+         
+        contenedor.add(organizaVentana(),BorderLayout.EAST);
+        contenedor.add(opciones(),BorderLayout.WEST);
+    }
+    
+    /**
+     * Genera el boton inferior de mi ventana
+     * @return JComponent parte inferior de mi ventana
+     */
     public  JComponent salir(){
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(1,1,0,10));
@@ -69,11 +94,18 @@ public class VentanaListado extends JFrame implements ActionListener {
         return inner;
     }
     
+    /**
+     * Bloquea el campo y el boton sperior de mi ventana
+     */
     public void bloquea(){     // creado par heredarlo
         campo.setEnabled(false);
         bBuscar.setEnabled(false);
     }
     
+    /**
+     * Opciones de la parte superior de mi ventana
+     * @return JComponent Componente superior de la ventana
+     */
     public JComponent filtrar(){
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(1,3,5,5));
@@ -96,21 +128,10 @@ public class VentanaListado extends JFrame implements ActionListener {
         return inner;
     }
     
-    protected void cabeceras(){// para heredar cabeceras de tabla
-        
-    }
-    
-    
-    protected void muestraFilas(){ //para heredar filas de la tabla
-
-    }
-    
-    protected void centrarDatos(){
-//        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-//        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-//        table.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
-    }
-    
+    /**
+     * Contiene la tabla sobre la que se desea Listar los datos
+     * @return JComponent Tabla que se mostrará
+     */
     public JComponent tabla(){
         JScrollPane inner; 
         modelo=new DefaultTableModel();
@@ -123,6 +144,10 @@ public class VentanaListado extends JFrame implements ActionListener {
         return inner;
     }
     
+    /**
+     * Genera las opciones de mi ventana (Menu botones)
+     * @return JComponent Botonera izquierda de mi ventana
+     */
     private JComponent opciones(){
         String [] opciones={"Listado Socios","Listado Actividades",
                             "Listado Facturas"};
@@ -141,17 +166,10 @@ public class VentanaListado extends JFrame implements ActionListener {
         return inner;
     }
     
-    private void initComponents(){
-        
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        contenedor=(JPanel) this.getContentPane();
-          
-        contenedor.setLayout(new BorderLayout());
-         
-        contenedor.add(organizaVentana(),BorderLayout.EAST);
-        contenedor.add(opciones(),BorderLayout.WEST);
-    }
-    
+    /**
+     * Organiza los componentes que se agregarán al JPane principal
+     * @return JComponent componente central del BorderLayaout
+     */
     public JComponent organizaVentana(){
         JPanel inner = new JPanel();
         inner.setLayout(new BorderLayout());
@@ -163,15 +181,46 @@ public class VentanaListado extends JFrame implements ActionListener {
         return inner;
     }
     
+    /**
+     * Ventana interactiva para mostrar información
+     * @param cadena Texto a mostrar
+     */
     protected void ventanaInfo(String cadena){
         JOptionPane.showMessageDialog(this,cadena);
     }
     
-    protected void muestraLista(){ //creado para heredarlo
+    /**
+     * Se ejecutara cuando presionemos Buscar -->Creado para heredar 
+     */
+    protected void muestraLista(){
 
     }
     
+    /**
+     * Cabeceras de tabla -->Creado para heredar 
+     */
+    protected void cabeceras(){
+        
+    }
+    
+    /**
+     * Agrega filas a la tabla -->Creado para heredar
+     */
+    protected void muestraFilas(){
 
+    }
+    
+    /**
+     * Centra los datos de las columnas de mi tabla -->Creado para heredar
+     */
+    protected void centrarDatos(){
+
+    }
+    
+    /**
+     * Contiene la diversas opciones que se ejecutarán cuando actuemos sobre la ventana
+     * @param ae Evento generado en la ventana
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         switch(ae.getActionCommand()){

@@ -12,11 +12,18 @@ import javax.swing.JOptionPane;
 import modelo.Socio;
 
 /**
- *
- * @author Jemazh
+ *  Ventana que me permitirá Eliminar un Socio
+ * @author Mario
+ * @version 27/05/2016
  */
 public class VentanaBaja extends VentanaAlta{
     
+    /**
+     * Constructor de la Clase VentanaBaja
+     * @param db Conexión a la Base de Datos
+     * @param padre Ventana Principal (VentanaPpal)
+     * @param s Socio a modificar
+     */
     public VentanaBaja(CtrlDataBase db, JFrame padre, Socio s) {
         super(db, padre);
         this.setTitle("Baja Socio");
@@ -24,6 +31,10 @@ public class VentanaBaja extends VentanaAlta{
         rellena(s);
     }
     
+    /**
+     * Rellena los campos de mi ventana
+     * @param s Socio que se desea modificar
+     */
     protected void rellena(Socio s){
         campo[0].setText(s.getCodSoc());       
         campo[1].setText(s.getNombre());       
@@ -36,21 +47,28 @@ public class VentanaBaja extends VentanaAlta{
             campo[i].setEditable(false);  
         }       
     }
+    
+    /**
+     * Ventana interactiva que confirma la eliminación de un Socio
+     */
     private int confirma(){
         int n= JOptionPane.showConfirmDialog(this,"¿Deseas Eliminarlo?");               
         return n;
     }
+    
     /**
-     *
+     * Cambia el color del campo id_soc
      */
     @Override
-    protected void bloqueaCampos(){
+    protected void colorCampos(){
         for (int i = 0; i < campo.length; i++) {
             campo[0].setBackground(new Color(238,238,238));  
         } 
     }
     
-    
+    /**
+     * Elimina el Socio, en caso contrario muestra un mensaje
+     */
     @Override
     protected void ejecutar(){
         switch (confirma()){

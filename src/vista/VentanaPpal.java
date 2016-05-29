@@ -25,8 +25,9 @@ import javax.swing.SwingConstants;
 import modelo.Socio;
 
 /**
- *
+ * Primera ventana que se mostrará con el Menú inicial e información
  * @author Mario
+ * @version 27/05/2016
  */
 public class VentanaPpal extends JFrame implements ActionListener,WindowListener {
     JPanel contenedor;
@@ -34,16 +35,23 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     JLabel titulo;
     CtrlDataBase db;
     
+    /**
+     * Constructor de la clase VentanaPpal
+     * @param db Conexión a la Base de Datos
+     */
     public VentanaPpal(CtrlDataBase db){
         this.db=db;
         this.setTitle("Club Social Nosferatus");
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         initComponents();
-        this.addWindowListener(this);
-        
+        this.addWindowListener(this);        
     }
-  
+    
+    /**
+     * Agrupa y genera los botonos de forma dinámica
+     * @return JComponent contiene los botones con mi Menú
+     */
     public JComponent menu(){
         String [] opciones={"Alta socio","Baja socio",
                             "Modificacion Socio","Listados",
@@ -62,6 +70,9 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         return inner;
     }
     
+    /**
+     * Cuerpo principal de mi Ventana (VentanaPpal)
+     */
     private void initComponents(){
        
         contenedor=(JPanel) this.getContentPane();
@@ -83,16 +94,28 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         
     }
     
+    /**
+     * Ventana interactiva para insertar datos (Codigo de socio)
+     * @return String Contiene el campo que herellenado
+     */
     public String preguntaCodigo(){
         String seleccion = JOptionPane.showInputDialog(this,"Introduce codigo del socio");
         
         return seleccion;
     }
     
+    /**
+     * Ventana interactiva para mostrar información
+     * @param cadena Texto a mostrar
+     */
     private void ventanaInfo(String cadena){
         JOptionPane.showMessageDialog(this,cadena);
     }
     
+    /**
+     * Ventana interactiva que se muestra cuando se ha producido un Error
+     * @param cadena Texto a mostrar
+     */
     private void ventanaError(String cadena) {
         JOptionPane.showMessageDialog(
                 this, cadena,
@@ -100,13 +123,17 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     }
     
     /**
-     * 
+     * Contiene los métodos que se ejecutarán al cerrar mi ventana
      */
     private void fin(){
         db.cerrarConexion();
         System.exit(0);
     }
     
+    /**
+     * Contiene la diversas opciones que se ejecutarán cuando actuemos sobre la ventana
+     * @param e Evento generado en la ventana
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){

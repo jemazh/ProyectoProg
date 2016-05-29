@@ -9,8 +9,9 @@ import controlador.CtrlDataBase;
 import vista.VentanaPpal;
 
 /**
- *
+ * Clase que contiene le Main de ProyectoProg
  * @author Mario
+ * @version 19/05/2016
  */
 public class ProyectoProg {
 

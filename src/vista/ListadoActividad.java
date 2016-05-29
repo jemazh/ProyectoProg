@@ -15,11 +15,18 @@ import modelo.Actividad;
 import modelo.Socio;
 
 /**
- *
+ * Ventana que muesta un listado de Actividades
  * @author Mario
+ * @version 27/05/2016
  */
 public class ListadoActividad extends VentanaListado{
-
+    
+    /**
+     * Constructor de la Clase VentanaAlta
+     * @param db Conexión a la Base de Datos
+     * @param j Ventana Principal (VentanaPpal)
+     * @param a ArrayList con las clases a Listar 
+     */
     ListadoActividad(CtrlDataBase d, JFrame padre,ArrayList s) {
         super(d,padre,s);
     }
@@ -55,12 +62,12 @@ public class ListadoActividad extends VentanaListado{
             try{
                 Actividad a=(Actividad)it.next();
                 longitud=Actividad.getCabecera().length;
-                for (int i = 1; i <= longitud; i++) {
+                for (int i = 0; i < longitud; i++) {
                     table.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
                 }              
             }catch(ClassCastException e){
                 longitud=Socio.getCabecera().length;
-                for (int i = 1; i <= longitud; i++) {
+                for (int i = 0; i < longitud; i++) {
                     table.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
                 }
             }
@@ -94,7 +101,12 @@ public class ListadoActividad extends VentanaListado{
         bBuscar.setEnabled(true);
         etiquetaBuscar.setText("ID_ACTIVIDAD :");
     }
- 
+    
+    /**
+     * Busca todos los sociosque estan en una Actividad
+     * @param dato Campo a buscar iD_Actividad
+     * @return 
+     */
     public ArrayList<Socio> buscar(String dato) {
         ArrayList <Socio> arryS=db.listaSocios();
         ArrayList <Actividad> arryA=db.listaActividad();

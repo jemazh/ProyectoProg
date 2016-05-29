@@ -11,11 +11,18 @@ import javax.swing.JFrame;
 import modelo.Socio;
 
 /**
- *
+ * Ventana que me permitira modificar los datos de un Socio
  * @author Mario
+ * @version 27/05/2016
  */
 public class VentanaModificar extends VentanaAlta {
 
+    /**
+     * Constructor de la Clase VentanaModificar
+     * @param db Conexión a la Base de Datos
+     * @param padre Ventana Principal (VentanaPpal)
+     * @param s Socio a modificar
+     */
     public VentanaModificar(CtrlDataBase db, JFrame padre, Socio s) {
         super(db, padre);
         this.setTitle("Modificar Socio");
@@ -23,10 +30,13 @@ public class VentanaModificar extends VentanaAlta {
         rellena(s);
     }
     
+    /**
+     * Rellena los campos de mi ventana
+     * @param s Socio que se desea modificar
+     */
     protected void rellena(Socio s){
         campo[0].setText(s.getCodSoc());
         campo[0].setEditable(false);
-        
         campo[1].setText(s.getNombre());
         campo[2].setText(s.getApellido());
         campo[3].setText(s.getDniNif());
@@ -35,13 +45,16 @@ public class VentanaModificar extends VentanaAlta {
     }
     
     /**
-     *
+     * Cambia el color del campo id_soc
      */
     @Override
-    protected void bloqueaCampos(){
+    protected void colorCampos(){
         campo[0].setBackground(new Color(238,238,238));
     }
     
+    /**
+     * Modifica el Socio si los datos son correctos
+     */
     @Override
     protected void ejecutar(){
         if (datosCorrectos()){ 

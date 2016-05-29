@@ -23,8 +23,9 @@ import javax.swing.SwingConstants;
 import modelo.Socio;
 
 /**
- *
+ * Ventana que se ejecutará cuando queramos dar de Alta un socio
  * @author Mario
+ * @version 27/05/2016
  */
 public class VentanaAlta extends JFrame implements ActionListener {
     protected JPanel contenedor;
@@ -33,6 +34,8 @@ public class VentanaAlta extends JFrame implements ActionListener {
     protected CtrlDataBase db;
     protected JFrame padre;
     
+    //textEtiqTipoLong-->Me permitirá la modificación del código de una forma más sencilla
+    //ToDo Pendiente incluirla en el modelo Socio
     String [][] textEtiqTipoLong={{"CODIGO* :","NUMERIC","6"},
                                   {"NOMBRE* :","VARCHAR","50"},
                                   {"APELLIDOS* :","VARCHAR","60"},
@@ -41,7 +44,11 @@ public class VentanaAlta extends JFrame implements ActionListener {
                                   {"TELEFONO MOVIL :","VARCHAR","15"}};
 
     
-
+    /**
+     * Constructor de la Clase VentanaAlta
+     * @param db Conexión a la Base de Datos
+     * @param padre Ventana Principal (VentanaPpal) 
+     */
     public VentanaAlta(CtrlDataBase db,JFrame padre) {
         this.padre=padre;
         padre.setVisible(false);
@@ -54,6 +61,10 @@ public class VentanaAlta extends JFrame implements ActionListener {
         this.setResizable(false);
     }
     
+    /**
+     * Genera todos los campos de mi ventana
+     * @return JComponent Contiene los campos
+     */
     protected JComponent addCampos(){
         
         JPanel inner = new JPanel();
@@ -71,7 +82,11 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return inner;
     }
     
-     protected JComponent addBotones(){
+    /**
+     * Genera todos los Botones de mi ventana
+     * @return JComponent Contiene los botones
+     */
+    protected JComponent addBotones(){
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(1,2,5,5));
         
@@ -89,6 +104,9 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return inner;
      }
     
+    /**
+     * Cuerpo principal de mi Ventana
+     */
     protected void initComponents() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         JLabel mensaje=new JLabel("Los campos con Asterisco son obligatorios",SwingConstants.CENTER);
@@ -103,7 +121,10 @@ public class VentanaAlta extends JFrame implements ActionListener {
         contenedor.add(addBotones(),BorderLayout.SOUTH);
 
     }
-
+    
+    /**
+     * Limpia todos los campos de mi ventana
+     */
     protected void limpiaPantalla() {
         for (int i = 0; i < campo.length; i++) {
             campo[i].setText(null);
@@ -111,13 +132,11 @@ public class VentanaAlta extends JFrame implements ActionListener {
         }
     }
     
-    protected void ventanaInfo(String cadena){
-        JOptionPane.showMessageDialog(this,cadena);
-    }
-    
-    // para poder acceder al COLOR de los campos en caso de heredarlos
-    protected void bloqueaCampos(){}; 
-                                
+    /**
+     * Comprueba que los datos introducidos en los campos sean correctos tomando
+     * en cuenta textEtiqTipoLong de la Clase
+     * @return Boolean True si son correctos
+     */
     protected boolean datosCorrectos(){
         boolean correcto=true;
         
@@ -131,11 +150,17 @@ public class VentanaAlta extends JFrame implements ActionListener {
             }
             
         }
-        bloqueaCampos();
+        colorCampos();
         
         return correcto;
     }
     
+    /**
+     * 
+     * @param dato Array de String con los dats de los campos
+     * @param valor Tipo de variable Habilitadasde momento NUMERIC y VARCHAR
+     * @return 
+     */
     protected boolean compruebaDatos(String [] dato, String valor){
         boolean correcto;
             
@@ -155,7 +180,13 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return correcto;
     }    
     
-    // si NO es obligatorio y esta vacio devolvemos "true"
+    /**
+     * Comprueba un dato Tipo NUMERIC y su longitud-->Entero positivo
+     * Si NO es obligatorio y esta vacio devolvemos "true"
+     * @param dato Array de String con los dats de los campos
+     * @param valor tipo de Dato me interesa si es obligatorio
+     * @return Boolean true si es correcto
+     */
     protected boolean compruebaEntPositivo(String [] dato, String valor) {
         boolean correcto=true;
  
@@ -178,6 +209,13 @@ public class VentanaAlta extends JFrame implements ActionListener {
         return correcto;
     }
     
+    /**
+     * Comprueba un dato Tipo VARCHAR y su longitud-->Entero positivo
+     * Si NO es obligatorio y esta vacio devolvemos "true"
+     * @param dato Array de String con los datos de los campos
+     * @param valor tipo de Dato me interesa si es obligatorio
+     * @return Boolean true si es correcto
+     */
     protected boolean compruebaCadena(String [] dato, String valor){
         boolean correcto=true;
  
@@ -190,13 +228,28 @@ public class VentanaAlta extends JFrame implements ActionListener {
         }
         return correcto;
     }
-
+    
+    /**
+     * Ventana interactiva para mostrar información
+     * @param cadena Texto a mostrar
+     */
+    protected void ventanaInfo(String cadena){
+        JOptionPane.showMessageDialog(this,cadena);
+    }
+    
+    /**
+     * Ventana interactiva que se muestra cuando se ha producido un Error
+     * @param cadena Texto a mostrar
+     */
     protected void ventanaError(String cadena) {
         JOptionPane.showMessageDialog(
                 this, cadena,
                 "Error", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+      
+    /**
+     * Método que se ejecuta cuando presionamos el boton aceptar
+     */
     protected void ejecutar(){
         if (datosCorrectos()){
             Socio s=new Socio(campo);
@@ -212,6 +265,15 @@ public class VentanaAlta extends JFrame implements ActionListener {
         }     
     }
     
+    /**
+     * ´Creado para poder cambiar el Color a los campos en caso de heredarlos
+     */
+    protected void colorCampos(){}; 
+    
+    /**
+     * Contiene la diversas opciones que se ejecutarán cuando actuemos sobre la Ventana
+     * @param e Evento generado en la ventana
+     */
     @Override
     public void actionPerformed(ActionEvent e){
         switch(e.getActionCommand()){

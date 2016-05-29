@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Club_Social>
+<Socio cod="45">
+<Nombre>.</Nombre>
+<Apellido>.</Apellido>
+<Dni_Nif>..</Dni_Nif>
+<Direccion>...</Direccion>
+<Telefono>...</Telefono>
+</Socio>
+<Socio cod="10">
+<Nombre>ADOLFO</Nombre>
+<Apellido>BECKER</Apellido>
+<Dni_Nif>70125799L</Dni_Nif>
+<Direccion>AV/ AMERICA 265 9F</Direccion>
+<Telefono>6123894697</Telefono>
+</Socio>
+<Socio cod="5">
+<Nombre>CRISTOBAL</Nombre>
+<Apellido>COLON</Apellido>
+<Dni_Nif>85435902Z</Dni_Nif>
+<Direccion>C/ SANTA TERESITA 29 2B</Direccion>
+<Telefono>6264795612</Telefono>
+</Socio>
+<Socio cod="7">
+<Nombre>DAVID</Nombre>
+<Apellido>NOSFERATUS</Apellido>
+<Dni_Nif>10490998F</Dni_Nif>
+<Direccion>C/ LA PACIENCIA 8 10A</Direccion>
+<Telefono>6244795745</Telefono>
+</Socio>
+<Socio cod="1">
+<Nombre>KATHERINE</Nombre>
+<Apellido>LATINO</Apellido>
+<Dni_Nif>Y5468273P</Dni_Nif>
+<Direccion>AV/ MADRID 225 5A</Direccion>
+<Telefono>625756745</Telefono>
+</Socio>
+<Socio cod="4">
+<Nombre>MARIA</Nombre>
+<Apellido>PELAYO</Apellido>
+<Dni_Nif>85435902X</Dni_Nif>
+<Direccion>C/ LA PIEDAD 18 14D</Direccion>
+<Telefono>6092160645</Telefono>
+</Socio>
+<Socio cod="6">
+<Nombre>MARIO</Nombre>
+<Apellido>MARADIAGA</Apellido>
+<Dni_Nif>Y0435902A</Dni_Nif>
+<Direccion>C/ EL PADRINO 18 1D</Direccion>
+<Telefono>6164795690</Telefono>
+</Socio>
+<Socio cod="3">
+<Nombre>ROXANA</Nombre>
+<Apellido>CUTA</Apellido>
+<Dni_Nif>96827383A</Dni_Nif>
+<Direccion>C/ RIOJA 5 1C</Direccion>
+<Telefono>6564709645</Telefono>
+</Socio>
+<Socio cod="8">
+<Nombre>RUBEN</Nombre>
+<Apellido>DARIO</Apellido>
+<Dni_Nif>X0120999F</Dni_Nif>
+<Direccion>AV/ PAMPLONA 160 3C</Direccion>
+<Telefono>6223495125</Telefono>
+</Socio>
+<Socio cod="9">
+<Nombre>WILLIAM</Nombre>
+<Apellido>SHAKESPEARE</Apellido>
+<Dni_Nif>90120341Z</Dni_Nif>
+<Direccion>AV/ CATALUÑA 10 30D</Direccion>
+<Telefono>6223345125</Telefono>
+</Socio>
+</Club_Social>

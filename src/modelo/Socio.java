@@ -15,11 +15,12 @@ public class Socio {
     private String direccion;
     private String tlfMovil;
     
+    //cabecera-->Me permitirá la modificación del código de una forma más sencilla
     static String [] cabecera={"COD_SOC","NOMBRE","APELLIDOS","DNI/NIF",
                                 "DIRECCION","TELEFONO"};
 
     /**
-     * 
+     * Constructor de la Clase Socio
      * @param codSoc Número que representa el codigo
      * @param nombre String con el nombre
      * @param apellido String con los apellidos
@@ -37,6 +38,10 @@ public class Socio {
         this.tlfMovil = tlfMovil.toUpperCase();
     }
     
+    /**
+     * Constructor de la Clase Socio
+     * @param c Contiene los campos con los datos del Socio
+     */
     public Socio(JTextField [] c){ //en Mayúsculas, sin espacios Iniciales/Finales
         this.codSoc = c[0].getText();
         this.nombre = c[1].getText().toUpperCase().trim();
@@ -46,6 +51,10 @@ public class Socio {
         this.tlfMovil = c[5].getText().toUpperCase().trim();
     }
     
+    /**
+     * Devuelve todos los datos de un Socio en formato Array de String
+     * @return Array Datos de una Factura 
+     */
     public String [] getArray(){
         String[] array=new String[cabecera.length];
         array[0]=codSoc;
@@ -56,34 +65,60 @@ public class Socio {
         array[5]=tlfMovil;
         return array;
     }
-
+    
+    /**
+     * Devuelve codSoc de Socio
+     * @return String codSoc de una Socio
+     */
     public String getCodSoc() {
         return codSoc;
     }
-
+    
+    /**
+     * Devuelve nombre de Socio
+     * @return String nombre de una Socio
+     */
     public String getNombre() {
         return nombre;
     }
-
+    
+    /**
+     * Devuelve apellido de Socio
+     * @return String apellido de una Socio
+     */
     public String getApellido() {
         return apellido;
     }
-
+    
+    /**
+     * Devuelve dniNif de Socio
+     * @return String dniNif de una Socio
+     */
     public String getDniNif() {
         return dniNif;
     }
-
+    
+    /**
+     * Devuelve direccion de Socio
+     * @return String direccion de una Socio
+     */
     public String getDireccion() {
         return direccion;
     }
-
+    
+    /**
+     * Devuelve tlfMovil de Socio
+     * @return String tlfMovil de una Socio
+     */
     public String getTlfMovil() {
         return tlfMovil;
     }
-
+    
+    /**
+     * Devuelve cabecera de Socio
+     * @return String cabecera de una Socio
+     */
     public static String[] getCabecera() {
         return cabecera;
-    }
-    
-    
+    }   
 }

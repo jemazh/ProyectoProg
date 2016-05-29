@@ -14,11 +14,18 @@ import javax.swing.table.DefaultTableCellRenderer;
 import modelo.Factura;
 
 /**
- *
+ * Ventana que muestra un listado de facturas
  * @author Mario
+ * @version 27/05/2016
  */
 public class ListadoFactura extends VentanaListado{
-
+    
+    /**
+     * Constructor de la Clase VentanaAlta
+     * @param db Conexión a la Base de Datos
+     * @param j Ventana Principal (VentanaPpal)
+     * @param a ArrayList con las clases a Listar 
+     */
     ListadoFactura(CtrlDataBase db, JFrame padre, ArrayList fact) {
         super(db,padre,fact);
     }
@@ -38,7 +45,7 @@ public class ListadoFactura extends VentanaListado{
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
         int longitud=Factura.getCabecera().length;
         
-        for (int i = 1; i <= longitud; i++) {
+        for (int i = 0; i < longitud; i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
         }       
     }
@@ -61,6 +68,11 @@ public class ListadoFactura extends VentanaListado{
         etiquetaBuscar.setText("COD_SOC :");
     }
     
+    /**
+     * Contiene un lista de facturas de un determinado socio
+     * @param dato cod_soc a buscar
+     * @return 
+     */
     public ArrayList buscar(String dato) {
         ArrayList <Factura> listaCompleta=db.listaFactura();
         ArrayList <Factura> arry=new ArrayList();
