@@ -17,8 +17,9 @@ import modelo.Socio;
 import oracle.jdbc.driver.OracleDriver;
 
 /**
- *
+ * Clase que me controla el acceso a la Base de Datos
  * @author Mario
+ * @version 20/05/2016
  */
 public class CtrlDataBase {
     String bd;
@@ -27,6 +28,13 @@ public class CtrlDataBase {
     String servidor;
     Connection conexion;
     
+    /**
+     * Constructor de la Clase CtrlDataBase
+     * @param bd Base de datos
+     * @param login Login de Usuario
+     * @param password Nombre de Usuario
+     * @param servidor Punto de Acceso al servidor
+     */
     public CtrlDataBase(String bd, String login, String password, String servidor) {
 
         this.bd = bd;
@@ -35,6 +43,10 @@ public class CtrlDataBase {
         this.servidor = servidor;
     }
     
+    /**
+     * Establece conexion con la Base de datos
+     * @return Boolean True si se ha establecido conexion
+     */
     public boolean abrirConexion() {
 
         boolean estado = false;
@@ -54,7 +66,9 @@ public class CtrlDataBase {
 
         return estado;
     }
-        
+     /**
+      * Cerramos de forma segura la conexión con la base de Datos
+      */   
     public void cerrarConexion() {
 
         try {
@@ -64,7 +78,12 @@ public class CtrlDataBase {
             System.out.println(e.getMessage());
         }
     }
-        
+    
+    /**
+     * Ejecuta un Insert en la tabla Socios
+     * @param s Socio al que quiero Insertar en la BD
+     * @return Int Cantidad de filas Insertadas
+     */
     public int ejecutaInsert(Socio s){
         int n=0;
         String cadena= "INSERT INTO SOCIOS (ID_SOC,COD_SOC,NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL)"
@@ -86,6 +105,11 @@ public class CtrlDataBase {
         return n;  
     }
     
+    /**
+     * Ejecuta un Update sobre la tabla Socios
+     * @param s Socio sobre el que deseo modificar sus datos
+     * @return Int Cantidad de filas modificadas
+     */
     public int ejecutaUpdate(Socio s){
         int n=0;
         String cadena= "UPDATE SOCIOS"
@@ -112,6 +136,11 @@ public class CtrlDataBase {
         return n;  
     }
     
+    /**
+     * Ejecuta un Delete sobre la tabla Socios
+     * @param codigo Código de socio al que quiero Eliminar
+     * @return Int Cantidad de filas borradas
+     */
     public int ejecutaDelete(String codigo){
         int n=0;
         String cadena= "DELETE FROM SOCIOS WHERE COD_SOC = ?";
@@ -129,61 +158,11 @@ public class CtrlDataBase {
         return n;  
     }
     
-    private String compruebaNull(String dato){       
-        if (dato==null){
-            dato="";
-        }       
-        return dato;
-    }
-    
-    private ArrayList<Socio> toArrayListSocios(ResultSet r) throws SQLException{
-        ArrayList <Socio> arry=new ArrayList();
-        
-        while(r.next()){
-            String codSoc=compruebaNull(r.getString(1));
-            String nombre=compruebaNull(r.getString(2));
-            String apellido=compruebaNull(r.getString(3));
-            String dnif=compruebaNull(r.getString(4));
-            String direccion=compruebaNull(r.getString(5));
-            String tlfMovil=compruebaNull(r.getString(6));
-            arry.add(new Socio(codSoc,nombre,apellido,dnif,direccion,tlfMovil));
-            
-        }
-        r.close();
-        return arry;
-    }
-    
-    private ArrayList<Actividad> toArrayListActividad(ResultSet r) throws SQLException{
-        ArrayList <Actividad> arry=new ArrayList();
-        
-        while(r.next()){
-            String idAct=compruebaNull(r.getString(1));
-            String nombre=compruebaNull(r.getString(2));
-            String fecha=compruebaNull(r.getString(3));
-            String monitor=compruebaNull(r.getString(4));
-            String capacidad=compruebaNull(r.getString(5));
-            String codSoc=compruebaNull(r.getString(6));
-            arry.add(new Actividad(idAct,nombre,fecha,monitor,capacidad,codSoc));
-        }
-        r.close();
-        return arry;
-    }
-    
-    private ArrayList<Factura> toArrayListFactura(ResultSet r) throws SQLException{
-        ArrayList <Factura> arry=new ArrayList();
-        
-        while(r.next()){
-            String idFact=compruebaNull(r.getString(1));
-            String fecha=compruebaNull(r.getString(2));
-            String cabecera=compruebaNull(r.getString(3));
-            String total=compruebaNull(r.getString(4));
-            String codSoc=compruebaNull(r.getString(5));
-            arry.add(new Factura(idFact,fecha,cabecera,total,codSoc));
-        }
-        r.close();
-        return arry;
-    }
-    
+    /**
+     * Ejecuta una Select sobre la tabla Socios
+     * @param codigo Código del socio que buscamos 
+     * @return Socio Devuelve el Socio que buscabamos
+     */
     public Socio buscaSocio(String codigo) {
         Socio s=null;
         String cadena= "SELECT COD_SOC,NOMBRE,APELLIDOS,DNI_NIF,DIRECCION,TELEFONO_MOVIL"
@@ -210,6 +189,10 @@ public class CtrlDataBase {
         return s;  
     }
     
+    /**
+     * Ejecuta una Select sobre la tabla Socios
+     * @return ArrayList Devuelve todos los socios
+     */
     public ArrayList<Socio> listaSocios() { 
         ArrayList arry=new ArrayList();
         
@@ -232,6 +215,10 @@ public class CtrlDataBase {
         return arry;  
     }
     
+    /**
+     * Ejecuta una Select sobre la tabla Actividad, Cursa y Socios
+     * @return ArrayList Devuelve todas las Actividades y los socios que participan en ellas
+     */
     public ArrayList listaActividad() { 
         ArrayList arry=new ArrayList();
         
@@ -259,6 +246,10 @@ public class CtrlDataBase {
          
     }
     
+    /**
+     * Ejecuta una Select sobre la tabla Factura y Socios
+     * @return ArrayList Devuelve todas las Facturas y los socios a las que corresponden
+     */
     public ArrayList listaFactura() { 
         ArrayList arry=new ArrayList(); 
                
@@ -284,4 +275,81 @@ public class CtrlDataBase {
         return arry; 
     }
 
+    /**
+     * Convierte un ResulSet en un ArrayList de Socios
+     * @param r Resulset Contiene la filas de los socios
+     * @return ArrayList Devuelve todos los socios
+     * @throws SQLException Capturo en el método listaSocios()
+     */
+    private ArrayList<Socio> toArrayListSocios(ResultSet r) throws SQLException{
+        ArrayList <Socio> arry=new ArrayList();
+        
+        while(r.next()){
+            String codSoc=compruebaNull(r.getString(1));
+            String nombre=compruebaNull(r.getString(2));
+            String apellido=compruebaNull(r.getString(3));
+            String dnif=compruebaNull(r.getString(4));
+            String direccion=compruebaNull(r.getString(5));
+            String tlfMovil=compruebaNull(r.getString(6));
+            arry.add(new Socio(codSoc,nombre,apellido,dnif,direccion,tlfMovil));
+            
+        }
+        r.close(); //Cierro ResultSet
+        return arry;
+    }
+    
+    /**
+     * Convierte un ResulSet en un ArrayList de Actividad
+     * @param r Resulset Contiene la filas de las Actividades
+     * @return ArrayList Devuelve todos las Actividades
+     * @throws SQLException Capturo en el método listaActividad()
+     */
+    private ArrayList<Actividad> toArrayListActividad(ResultSet r) throws SQLException{
+        ArrayList <Actividad> arry=new ArrayList();
+        
+        while(r.next()){
+            String idAct=compruebaNull(r.getString(1));
+            String nombre=compruebaNull(r.getString(2));
+            String fecha=compruebaNull(r.getString(3));
+            String monitor=compruebaNull(r.getString(4));
+            String capacidad=compruebaNull(r.getString(5));
+            String codSoc=compruebaNull(r.getString(6));
+            arry.add(new Actividad(idAct,nombre,fecha,monitor,capacidad,codSoc));
+        }
+        r.close(); //Cierro ResultSet
+        return arry;
+    }
+    
+    /**
+     * Convierte un ResulSet en un ArrayList de Facturas
+     * @param r Resulset Contiene la filas de las Facturas
+     * @return ArrayList Devuelve todos las Facturas
+     * @throws SQLException Capturo en el método listaFactura()
+     */
+    private ArrayList<Factura> toArrayListFactura(ResultSet r) throws SQLException{
+        ArrayList <Factura> arry=new ArrayList();
+        
+        while(r.next()){
+            String idFact=compruebaNull(r.getString(1));
+            String fecha=compruebaNull(r.getString(2));
+            String cabecera=compruebaNull(r.getString(3));
+            String total=compruebaNull(r.getString(4));
+            String codSoc=compruebaNull(r.getString(5));
+            arry.add(new Factura(idFact,fecha,cabecera,total,codSoc));
+        }
+        r.close(); //Cierro ResultSet
+        return arry;
+    }
+    
+    /**
+     * Convierte todas las String nulas en vacias
+     * @param dato String que quiero Comprobar/Transformar
+     * @return String Devuelve el String en caso de no ser nula
+     */
+    private String compruebaNull(String dato){       
+        if (dato==null){
+            dato="";
+        }       
+        return dato;
+    }
 }

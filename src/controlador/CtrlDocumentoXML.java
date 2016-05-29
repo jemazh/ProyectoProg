@@ -5,11 +5,8 @@
  */
 package controlador;
 
-import java.io.IOException;
-import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.ListIterator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,111 +24,100 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
+
 /**
- *
+ * Clase estática que me controla el acceso a un documento XML
  * @author Mario
+ * @version 28/05/2016
  */
 public class CtrlDocumentoXML {
-        
-//    private static Document pasarXmlADom(String nombreFichero) {
-//        
-//        Document doc = null;
-//        try {
-//        //1º Creamos una nueva instancia de un fabricante de constructores de documentos
-//        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//            //2º A partir de la instancia anterior, fabricamos un constructor
-//            // de documentos, que procesará el XML.
-//            DocumentBuilder db = dbf.newDocumentBuilder();
-//            //3º Procesamos el documento (almacenado en un archivo) y lo convetimos en un árbol DOM.
-//            doc = db.parse(new File(nombreFichero));
-//            return doc;
-//        } catch (ParserConfigurationException | SAXException | IOException ex) {
-//            System.out.println("Error Archivo " + nombreFichero);
-//        }
-//        //Es necesario que la variable doc esté fuera del try si quiero devolverla
-//        //en caso de error doc valdrá null
-//        return doc;
-//    }
-    
-
-    
-
-    
-
-    
-
-       
-    
-
-//    
-//    
-//    public static boolean generaXML(String nombreDocumento, ArrayList <Socio> socios ){
-//        //sin datos, sólo el elemento raiz
-//        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder db;
-//
-//        try {
-//            db = dbf.newDocumentBuilder();
-//            //Creamos el documento XML y le pasamos la etiqueta raiz
-//            DOMImplementation implementation = db.getDOMImplementation();
-//            Document document = implementation.createDocument(null, "MisPelis", null);
-//            document.setXmlVersion("1.0");
-//            //Main Node: Primer ejemplos, sólo con el elemento raíz
-//            Element raiz = document.getDocumentElement();
-//            //System.out.println("Raiz: " + raiz.getNodeName());
-//            try {
-//                //Ahora creamos un elemento con los datos del ResulSet
-//                //Por cada Nombre crearemos una <alumno>
-//                Iterator it=socios.listIterator();
-//                while (it.hasNext()) {
-//                    //Creamos la Etiqueta alumno
-//                    Element etiquetaAlumno = document.createElement("alumno");
-//                    etiquetaAlumno.setAttribute("id",rs.getString(1) );
-//                    
-//                    //Creamos la Etiqueta nombre
-//                    Element etiquetaNombre = document.createElement("nombre");
-//                    Text valorNombre = document.createTextNode(rs.getString(2));
-//                    etiquetaNombre.appendChild(valorNombre);
-//                    
-//                    
-//                    //Creamos la Etiqueta nota_media
-//                    Element etiquetaMedia = document.createElement("nota_media");
-//                    Text valorMedia= document.createTextNode(notaMedia(rs.getInt(3),rs.getInt(4),rs.getInt(5)));
-//                    etiquetaMedia.appendChild(valorMedia);
-//                    
-//                    
-//                    //Añadimos la etiqueta nombre y la etiqueta apellidos a la etiqueta persona
-//                    etiquetaAlumno.appendChild(etiquetaNombre);
-//                    etiquetaAlumno.appendChild(etiquetaMedia);
-//                    //Añadimos la etiqueta persona a la raiz
-//                    raiz.appendChild(etiquetaAlumno);
-//                    //Pegamos el elemento a la raiz "Documento"
-//                }
-//                //IMPORTANTE cerrar el resultSet
-//                rs.close();                
-//            } catch (SQLException ex) {
-//                System.out.println("Error sql: "+ex.getMessage());
-//            }
-//            
-//            //Generate XML
-//            Source source = new DOMSource(document);
-//            //Indicamos donde lo queremos almacenar
-//            //No tiene porque coincidir el Nombre de la etiqueta Raiz con la Etiqueta Raiz
-//            Result result = new StreamResult(new java.io.File("fichero/"+nombreDocumento+".xml"));
-//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-//            transformer.transform(source, result);
-//
-//        } catch (ParserConfigurationException ex) {
-//            System.out.println("Error escribiendo Fichero");
-//        } catch (TransformerConfigurationException ex) {
-//            System.out.println("Error escribiendo Fichero");
-//        } catch (TransformerException ex) {
-//            System.out.println("Error escribiendo Fichero");
-//        }
-//        return true;
      
-    
+    /**
+     * Genera un documento XML que contiene los datos de todos los Socios
+     * @param nombreDocumento Nombre que tendrá mi documento y su elemento Raiz
+     * @param dataBase Conexión con la Base de Datos
+     * @return Boolean True en caso de el documento se haya creado.
+     */
+    public static boolean generaXML(String nombreDocumento, CtrlDataBase dataBase ){
+        ArrayList <Socio> socios=dataBase.listaSocios();
+        boolean correcto=true;
+        Socio s;
+        
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+
+        try {
+            db = dbf.newDocumentBuilder();
+            //Creamos el documento XML y le pasamos la etiqueta raiz
+            DOMImplementation implementation = db.getDOMImplementation();
+            Document document = implementation.createDocument(null, nombreDocumento, null);
+            document.setXmlVersion("1.0");
+            Element raiz = document.getDocumentElement();
+            ListIterator it=socios.listIterator();
+            while (it.hasNext()) {
+                s=(Socio)it.next();
+                //Creamos la Etiqueta socio
+                Element etiquetaSocio = document.createElement("Socio");
+                etiquetaSocio.setAttribute("cod",s.getCodSoc());
+
+                //Creamos la Etiqueta nombre
+                Element etiquetaNombre = document.createElement("Nombre");
+                Text valorNombre = document.createTextNode(s.getNombre());
+                etiquetaNombre.appendChild(valorNombre);
+
+
+                //Creamos la Etiqueta apellido
+                Element etiquetaApellido = document.createElement("Apellido");
+                Text valorApellido= document.createTextNode(s.getApellido());
+                etiquetaApellido.appendChild(valorApellido);
+
+                //Creamos la Etiqueta DNI_NIF
+                Element etiquetaDniF = document.createElement("Dni_Nif");
+                Text valorDniF= document.createTextNode(s.getDniNif());
+                etiquetaDniF.appendChild(valorDniF);
+
+                //Creamos la Etiqueta Direccion
+                Element etiquetaDireccion = document.createElement("Direccion");
+                Text valorDireccion= document.createTextNode(s.getDireccion());
+                etiquetaDireccion.appendChild(valorDireccion);
+
+                //Creamos la Etiqueta Telefono
+                Element etiquetaTelefono = document.createElement("Telefono");
+                Text valorTelefono= document.createTextNode(s.getTlfMovil());
+                etiquetaTelefono.appendChild(valorTelefono);
+
+                //Añadimos las etiquetas a la etiqueta Socio
+                etiquetaSocio.appendChild(etiquetaNombre);
+                etiquetaSocio.appendChild(etiquetaApellido);
+                etiquetaSocio.appendChild(etiquetaDniF);
+                etiquetaSocio.appendChild(etiquetaDireccion);
+                etiquetaSocio.appendChild(etiquetaTelefono);
+                //Añadimos la etiqueta persona a la raiz
+                raiz.appendChild(etiquetaSocio);
+                //Pegamos el elemento a la raiz "Documento"
+            }
+           
+            //Generate XML
+            Source source = new DOMSource(document);
+            //Indicamos donde lo queremos almacenar
+            //No tiene porque coincidir el Nombre de la etiqueta Raiz con la Etiqueta Raiz
+            Result result = new StreamResult(new java.io.File("fichero/"+nombreDocumento+".xml"));
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException ex) {
+            correcto=false;
+            System.out.println("Error escribiendo Fichero");
+        } catch (TransformerConfigurationException ex) {
+            correcto=false;
+            System.out.println("Error escribiendo Fichero");
+        } catch (TransformerException ex) {
+            correcto=false;
+            System.out.println("Error escribiendo Fichero");
+        }
+        return correcto;   
+    }
+        
 }

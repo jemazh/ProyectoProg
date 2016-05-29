@@ -124,7 +124,6 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                         ventanaInfo("No existe socio con ese CODIGO");
                     }     
                 }
- 
                 break;
             case "3":
                 String exit=preguntaCodigo();// para evitar que me saque el mensaje de codigo incorrecto
@@ -142,11 +141,11 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 VentanaListado vp=new VentanaListado(db,this,a);
                 break;
             case "5":
-//                if (CtrlDocumentoXML.generaXML("Socios",db.listaSocios())){
-//                    ventanaInfo("Documento XML creado");
-//                }else{
-//                    ventanaError("Error al crear el documento XML");
-//                }
+                if (CtrlDocumentoXML.generaXML("Club_Social",db)){
+                    ventanaInfo("Documento XML creado");
+                }else{
+                    ventanaError("Error al crear el documento XML");
+                }
                 break;
             case "6":
                 fin();

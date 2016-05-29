@@ -9,6 +9,8 @@ import controlador.CtrlDataBase;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import modelo.Actividad;
 import modelo.Socio;
 
@@ -21,8 +23,7 @@ public class ListadoActividad extends VentanaListado{
     ListadoActividad(CtrlDataBase d, JFrame padre,ArrayList s) {
         super(d,padre,s);
     }
-    
-    
+        
     @Override
     public void cabeceras(){
         String [] tituloColumnas;
@@ -43,6 +44,28 @@ public class ListadoActividad extends VentanaListado{
         }
     }
     
+    @Override
+    public void centrarDatos(){
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        int longitud;
+        
+        ListIterator it= lista.listIterator();
+        if (it.hasNext()){
+            try{
+                Actividad a=(Actividad)it.next();
+                longitud=Actividad.getCabecera().length;
+                for (int i = 1; i <= longitud; i++) {
+                    table.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+                }              
+            }catch(ClassCastException e){
+                longitud=Socio.getCabecera().length;
+                for (int i = 1; i <= longitud; i++) {
+                    table.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+                }
+            }
+        }
+    }
     
     @Override
     public void muestraFilas(){        
@@ -87,8 +110,7 @@ public class ListadoActividad extends VentanaListado{
             }   
         }       
         return arry;
-    } 
-    
+    }    
     
     @Override
     protected void muestraLista(){ 

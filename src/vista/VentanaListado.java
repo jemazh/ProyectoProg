@@ -40,6 +40,7 @@ public class VentanaListado extends JFrame implements ActionListener {
     protected CtrlDataBase db;
     protected DefaultTableModel modelo;
     protected ArrayList lista;
+    protected JTable table;
     
     public VentanaListado(CtrlDataBase db,JFrame j,ArrayList a){
         this.lista=a;
@@ -95,22 +96,29 @@ public class VentanaListado extends JFrame implements ActionListener {
         return inner;
     }
     
-    public void cabeceras(){// para heredar cabeceras de tabla
+    protected void cabeceras(){// para heredar cabeceras de tabla
         
     }
     
     
-    public void muestraFilas(){ //para heredar filas de la tabla
+    protected void muestraFilas(){ //para heredar filas de la tabla
 
-    } 
+    }
+    
+    protected void centrarDatos(){
+//        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+//        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+//        table.getColumnModel().getColumn(2).setCellRenderer(modelocentrar);
+    }
     
     public JComponent tabla(){
         JScrollPane inner; 
         modelo=new DefaultTableModel();
-        JTable table=new JTable(modelo);
+        table=new JTable(modelo);
         inner=new JScrollPane(table);
         
-        muestraFilas();   
+        muestraFilas();
+        centrarDatos();
         
         return inner;
     }

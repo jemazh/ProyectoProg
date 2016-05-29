@@ -9,6 +9,8 @@ import controlador.CtrlDataBase;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import modelo.Factura;
 
 /**
@@ -28,7 +30,18 @@ public class ListadoFactura extends VentanaListado{
         for (int i = 0; i < c.length; i++) {
             modelo.addColumn(c[i]);
         }
-    }   
+    }
+    
+    @Override
+    public void centrarDatos(){
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        int longitud=Factura.getCabecera().length;
+        
+        for (int i = 1; i <= longitud; i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+        }       
+    }
     
     @Override
     public void muestraFilas(){

@@ -37,18 +37,13 @@ public class Socio {
         this.tlfMovil = tlfMovil.toUpperCase();
     }
     
-    public Socio(JTextField [] c){
+    public Socio(JTextField [] c){ //en Mayúsculas, sin espacios Iniciales/Finales
         this.codSoc = c[0].getText();
-        this.nombre = c[1].getText().toUpperCase();
-        this.apellido = c[2].getText().toUpperCase();
-        this.dniNif = c[3].getText().toUpperCase();
-        this.direccion = c[4].getText().toUpperCase();
-        this.tlfMovil = c[5].getText().toUpperCase();
-        corrigeEspacios();
-    }
-    
-    private void corrigeEspacios(){    // toDo elimina los espacios al principio
-        
+        this.nombre = c[1].getText().toUpperCase().trim();
+        this.apellido = c[2].getText().toUpperCase().trim();
+        this.dniNif = c[3].getText().toUpperCase().trim();
+        this.direccion = c[4].getText().toUpperCase().trim();
+        this.tlfMovil = c[5].getText().toUpperCase().trim();
     }
     
     public String [] getArray(){
