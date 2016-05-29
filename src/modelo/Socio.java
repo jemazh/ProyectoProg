@@ -8,41 +8,40 @@ import javax.swing.JTextField;
  * @version 20/05/2016
  */
 public class Socio {
-    private String cod_soc;
+    private String codSoc;
     private String nombre;
     private String apellido;
-    private String dni_nif;
+    private String dniNif;
     private String direccion;
     private String tlfMovil;
     
     static String [] cabecera={"COD_SOC","NOMBRE","APELLIDOS","DNI/NIF",
-                                "DIRECCION","TELEFONO MOVIL"};
+                                "DIRECCION","TELEFONO"};
 
     /**
      * 
-     * @param cod_soc Número que representa el codigo
+     * @param codSoc Número que representa el codigo
      * @param nombre String con el nombre
      * @param apellido String con los apellidos
-     * @param dni_nif String con el DNI o NIF
+     * @param dniNif String con el DNI o NIF
      * @param direccion String con la direccion
      * @param tlfMovil String con el telefono móvil
      */    
-    public Socio(String cod_soc, String nombre, String apellido, String dni_nif, 
+    public Socio(String codSoc, String nombre, String apellido, String dniNif, 
                  String direccion, String tlfMovil) {
-        this.cod_soc = cod_soc;
+        this.codSoc = codSoc;
         this.nombre = nombre.toUpperCase();
         this.apellido = apellido.toUpperCase();
-        this.dni_nif = dni_nif.toUpperCase();
+        this.dniNif = dniNif.toUpperCase();
         this.direccion = direccion.toUpperCase();
         this.tlfMovil = tlfMovil.toUpperCase();
-        corrigeEspacios();
     }
     
     public Socio(JTextField [] c){
-        this.cod_soc = c[0].getText();
+        this.codSoc = c[0].getText();
         this.nombre = c[1].getText().toUpperCase();
         this.apellido = c[2].getText().toUpperCase();
-        this.dni_nif = c[3].getText().toUpperCase();
+        this.dniNif = c[3].getText().toUpperCase();
         this.direccion = c[4].getText().toUpperCase();
         this.tlfMovil = c[5].getText().toUpperCase();
         corrigeEspacios();
@@ -54,17 +53,17 @@ public class Socio {
     
     public String [] getArray(){
         String[] array=new String[cabecera.length];
-        array[0]=cod_soc;
+        array[0]=codSoc;
         array[1]=nombre;
         array[2]=apellido;
-        array[3]=dni_nif;
+        array[3]=dniNif;
         array[4]=direccion;
         array[5]=tlfMovil;
         return array;
     }
 
-    public String getCod_soc() {
-        return cod_soc;
+    public String getCodSoc() {
+        return codSoc;
     }
 
     public String getNombre() {
@@ -75,8 +74,8 @@ public class Socio {
         return apellido;
     }
 
-    public String getDni_nif() {
-        return dni_nif;
+    public String getDniNif() {
+        return dniNif;
     }
 
     public String getDireccion() {

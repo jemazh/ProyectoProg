@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.CtrlDataBase;
+import controlador.CtrlDocumentoXML;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -37,9 +38,12 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         this.db=db;
         this.setTitle("Club Social Nosferatus");
         this.setVisible(true);
+        this.setLocationRelativeTo(null);
         initComponents();
+        this.addWindowListener(this);
+        
     }
-    
+  
     public JComponent menu(){
         String [] opciones={"Alta socio","Baja socio",
                             "Modificacion Socio","Listados",
@@ -80,10 +84,8 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     }
     
     public String preguntaCodigo(){
-        String seleccion = JOptionPane.showInputDialog(this,
-                                               "Introduce codigo del socio");
+        String seleccion = JOptionPane.showInputDialog(this,"Introduce codigo del socio");
         
-        System.out.println("El usuario ha escrito "+seleccion);
         return seleccion;
     }
     
@@ -91,11 +93,16 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
         JOptionPane.showMessageDialog(this,cadena);
     }
     
+    private void ventanaError(String cadena) {
+        JOptionPane.showMessageDialog(
+                this, cadena,
+                "Error", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     /**
-     * ToDo
+     * 
      */
     private void fin(){
-        //CtrlDocumentoXML.generaXML("Clase", db.ejecutaConsulta("SELECT * from alumnos"));
         db.cerrarConexion();
         System.exit(0);
     }
@@ -107,21 +114,39 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
                 VentanaAlta va=new VentanaAlta(db,this);
                 break;
             case "2":
-                VentanaBaja vb=new VentanaBaja(db,this);
+                String ext=preguntaCodigo(); // para evitar que me saque el mensaje de codigo incorrecto
+                
+                if (ext!=null){
+                    Socio s=db.buscaSocio(ext);
+                    if (s!=null){
+                        VentanaBaja vb=new VentanaBaja(db,this,s);
+                    }else{
+                        ventanaInfo("No existe socio con ese CODIGO");
+                    }     
+                }
+ 
                 break;
             case "3":
-                Socio soc=db.buscaSocio(preguntaCodigo());
-                if (soc!=null){
-                    VentanaModificar vl=new VentanaModificar(db,this,soc);
-                }else{
-                    ventanaInfo("No existe socio con ese CODIGO");
-                }               
+                String exit=preguntaCodigo();// para evitar que me saque el mensaje de codigo incorrecto
+                if (exit!=null){
+                    Socio soc=db.buscaSocio(exit);
+                    if (soc!=null){
+                        VentanaModificar vl=new VentanaModificar(db,this,soc);
+                    }else{
+                        ventanaInfo("No existe socio con ese CODIGO");
+                    }
+                }   
                 break;                
             case "4":
-                VentanaListado vp=new VentanaListado(db,this);
+                ArrayList a=new ArrayList();
+                VentanaListado vp=new VentanaListado(db,this,a);
                 break;
             case "5":
-                //VentanaBorrarSus va=new VentanaBorrarSus(db,this);
+//                if (CtrlDocumentoXML.generaXML("Socios",db.listaSocios())){
+//                    ventanaInfo("Documento XML creado");
+//                }else{
+//                    ventanaError("Error al crear el documento XML");
+//                }
                 break;
             case "6":
                 fin();
@@ -133,9 +158,7 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void windowOpened(WindowEvent e) {}
 
     @Override
     public void windowClosing(WindowEvent e) {
@@ -148,23 +171,15 @@ public class VentanaPpal extends JFrame implements ActionListener,WindowListener
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void windowIconified(WindowEvent e) {}
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void windowDeiconified(WindowEvent e) {}
 
     @Override
-    public void windowActivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void windowActivated(WindowEvent e) {}
 
     @Override
-    public void windowDeactivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public void windowDeactivated(WindowEvent e) {}
     
 }

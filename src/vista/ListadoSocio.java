@@ -16,16 +16,9 @@ import modelo.Socio;
  * @author Mario
  */
 public class ListadoSocio extends VentanaListado{
-    ArrayList <Socio> lista;
-
-    ListadoSocio(CtrlDataBase d, JFrame padre) {
-        super(d,padre);
-        this.lista=db.listaSocios();
-    }
     
     ListadoSocio(CtrlDataBase d, JFrame padre,ArrayList <Socio> s) {
-        super(d,padre);
-        this.lista=s;
+        super(d,padre,s);
     }
     
     @Override
@@ -38,7 +31,7 @@ public class ListadoSocio extends VentanaListado{
     }   
     
     @Override
-    public void muestraFilas(){        
+    public void muestraFilas(){
         cabeceras();
         ListIterator it= lista.listIterator();
         Socio s;
@@ -60,7 +53,7 @@ public class ListadoSocio extends VentanaListado{
         ArrayList <Socio> arry=new ArrayList();
         
         for (Socio s: listaCompleta){
-            if (s.getCod_soc().equals(dato)){
+            if (s.getCodSoc().equals(dato)){
                 arry.add(s);
             }    
         }

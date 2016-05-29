@@ -20,44 +20,48 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import modelo.Actividad;
+import modelo.Factura;
+import modelo.Socio;
 
 /**
  *
  * @author Mario
  */
 public class VentanaListado extends JFrame implements ActionListener {
-    JPanel contenedor;
-    JTextField campo;
-    JLabel etiquetaBuscar;
-    JButton bBuscar,bCancelar;
-    JFrame padre;
-    JButton [] botonLista;
-    CtrlDataBase db;
-    DefaultTableModel modelo;
+    protected JPanel contenedor;
+    protected JTextField campo;
+    protected JLabel etiquetaBuscar;
+    protected JButton bBuscar,bCancelar;
+    protected JFrame padre;
+    protected JButton [] botonLista;
+    protected CtrlDataBase db;
+    protected DefaultTableModel modelo;
+    protected ArrayList lista;
     
-    public VentanaListado(CtrlDataBase db,JFrame j){
+    public VentanaListado(CtrlDataBase db,JFrame j,ArrayList a){
+        this.lista=a;
         this.padre=j;
         this.db=db;
+        padre.setVisible(false);
         this.setLocation(j.getLocation());
         this.setTitle("Listados");
         this.setVisible(true);
         initComponents();
         this.pack();
-        this.setSize(608,300);
-        this.setResizable(false);// mantengo mi ventana fija
-        
-        
+        this.setResizable(false);
     }
 
-    public  JComponent cancelar(){
+    public  JComponent salir(){
         JPanel inner = new JPanel();
         inner.setLayout(new GridLayout(1,1,0,10));
         
         bCancelar=new JButton();
-        bCancelar.setText("Cancelar");
+        bCancelar.setText("Salir");
         bCancelar.addActionListener(this);  
-        bCancelar.setActionCommand("Cancelar");
+        bCancelar.setActionCommand("Salir");
         
         inner.add(bCancelar);
         
@@ -71,9 +75,10 @@ public class VentanaListado extends JFrame implements ActionListener {
     
     public JComponent filtrar(){
         JPanel inner = new JPanel();
-        inner.setLayout(new GridLayout(1,3,0,10));
+        inner.setLayout(new GridLayout(1,3,5,5));
         
         etiquetaBuscar=new JLabel("");
+        etiquetaBuscar.setHorizontalAlignment(SwingConstants.CENTER);
         campo=new JTextField();
         
         bBuscar=new JButton();
@@ -102,12 +107,7 @@ public class VentanaListado extends JFrame implements ActionListener {
     public JComponent tabla(){
         JScrollPane inner; 
         modelo=new DefaultTableModel();
-        //se crea la Tabla con el modelo DefaultTableModel
         JTable table=new JTable(modelo);
-        // se define el tamaño
-        //table.setPreferredScrollableViewportSize(new Dimension(500,70));
-        //Creamos un JscrollPane y le agregamos la JTable
-        
         inner=new JScrollPane(table);
         
         muestraFilas();   
@@ -120,8 +120,8 @@ public class VentanaListado extends JFrame implements ActionListener {
                             "Listado Facturas"};
         
         JPanel inner = new JPanel();
-        inner.setLayout(new GridLayout(opciones.length,1,0,10));
-        
+        inner.setLayout(new GridLayout(opciones.length,1,10,5));
+        //inner.setLayout(new GridLayout(1,opciones.length,5,5));
         botonLista=new JButton [opciones.length];
         for(int x=0;x<botonLista.length;x++){
             botonLista[x]=new JButton();
@@ -150,7 +150,7 @@ public class VentanaListado extends JFrame implements ActionListener {
         
         inner.add(filtrar(),BorderLayout.NORTH);
         inner.add(tabla(),BorderLayout.CENTER);
-        inner.add(cancelar(),BorderLayout.SOUTH);
+        inner.add(salir(),BorderLayout.SOUTH);
              
         return inner;
     }
@@ -168,26 +168,24 @@ public class VentanaListado extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         switch(ae.getActionCommand()){
             case "Listado Socios":
-                ListadoSocio mp= new ListadoSocio(db,padre);
+                ArrayList <Socio> s=db.listaSocios();
+                ListadoSocio mp= new ListadoSocio(db,padre,s);
                 this.dispose(); 
                 break;                      
             case "Listado Actividades":
-                ListadoActividad ap= new ListadoActividad(db,padre);
+                ArrayList <Actividad> a=db.listaActividad();
+                ListadoActividad ap= new ListadoActividad(db,padre,a);
                 this.dispose();
                 break;  
             case "Listado Facturas":
-                ArrayList fact=db.listaFactura();
-                if (fact.isEmpty()){
-                    ventanaInfo("No existe ninguna Factura");
-                }else{
-                    ListadoFactura fa= new ListadoFactura(db,padre,fact);
-                    this.dispose();
-                }
+                ArrayList <Factura> fact=db.listaFactura();
+                ListadoFactura fa= new ListadoFactura(db,padre,fact);
+                this.dispose();               
                 break;     
             case "Buscar":
                 muestraLista();
                 break;
-            case "Cancelar":
+            case "Salir":
                 padre.setVisible(true);
                 this.dispose();
                 break;

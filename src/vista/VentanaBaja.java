@@ -7,102 +7,72 @@ package vista;
 
 import controlador.CtrlDataBase;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import modelo.Socio;
 
 /**
  *
- * @author Mario
+ * @author Jemazh
  */
-public class VentanaBaja extends JFrame implements ActionListener{
-    JPanel contenedor;
-    JButton botonAlta, botonCancelar;
-    JTextField codigo;
-    JLabel etiquetaCodigo;
-    CtrlDataBase db;
-    JFrame padre;
+public class VentanaBaja extends VentanaAlta{
     
-    public VentanaBaja(CtrlDataBase db,JFrame padre) {
-        this.padre=padre;
-        padre.setVisible(false);
-        this.setLocation(padre.getLocation());
-        this.db=db;
-        this.setTitle("Baja socio");
-        this.setVisible(true);
-        initComponents();
-        this.pack();
-        this.setSize(300, 100);
-    }
-
-    private void initComponents() {
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        //Utilizo todo el fondo del JFrame
-        contenedor = (JPanel) this.getContentPane();
-        //Inicializo un layout
-        contenedor.setLayout(new GridLayout(2, 2, 5, 5));
-        //Inicializo los objetos
-        etiquetaCodigo = new JLabel("Codigo: ");
-        codigo = new JTextField();
-        botonAlta = new JButton("Baja");
-        botonAlta.addActionListener(this);
-        botonAlta.setActionCommand("baja");
-        botonCancelar = new JButton("Cancelar");
-        botonCancelar.addActionListener(this);
-        botonCancelar.setActionCommand("cancelar");
-        //los pongo en el contendor
-        contenedor.add(etiquetaCodigo);
-        contenedor.add(codigo);
-        contenedor.add(botonAlta);
-        contenedor.add(botonCancelar);
-    }
-
-    private void limpiaPantalla() {
-        codigo.setText(null);
-        codigo.setBackground(Color.white);
+    public VentanaBaja(CtrlDataBase db, JFrame padre, Socio s) {
+        super(db, padre);
+        this.setTitle("Baja Socio");
+        botonAlta.setText("Baja");
+        rellena(s);
     }
     
-    private void ventanaInfo(String cadena){
-        JOptionPane.showMessageDialog(this,cadena);
+    protected void rellena(Socio s){
+        campo[0].setText(s.getCodSoc());       
+        campo[1].setText(s.getNombre());       
+        campo[2].setText(s.getApellido());
+        campo[3].setText(s.getDniNif());
+        campo[4].setText(s.getDireccion());
+        campo[5].setText(s.getTlfMovil());
+        
+        for (int i = 0; i < campo.length; i++) {
+            campo[i].setEditable(false);  
+        }       
     }
-                
-    private void baja(){            
-            if (db.ejecutaDelete(codigo.getText())>0){
-                ventanaInfo("Socio eliminado");
-                limpiaPantalla();
-            }else{
-                codigo.setBackground(Color.yellow);
-                ventanaError("No existen Socios con ese código");
-            }
+    private int confirma(){
+        int n= JOptionPane.showConfirmDialog(this,"¿Deseas Eliminarlo?");               
+        return n;
+    }
+    /**
+     *
+     */
+    @Override
+    protected void bloqueaCampos(){
+        for (int i = 0; i < campo.length; i++) {
+            campo[0].setBackground(new Color(238,238,238));  
+        } 
     }
     
-
-    private void ventanaError(String cadena) {
-        JOptionPane.showMessageDialog(
-                this, cadena,
-                "Error", JOptionPane.INFORMATION_MESSAGE);
-    }
     
     @Override
-    public void actionPerformed(ActionEvent e){
-        switch(e.getActionCommand()){
-            case "baja":
-                baja();
+    protected void ejecutar(){
+        switch (confirma()){
+            case 0:
+                if (db.ejecutaDelete(campo[0].getText())>0){
+                    ventanaInfo("Socio eliminado");
+                    this.dispose();                        
+                    padre.setVisible(true);
+                }else{
+                    ventanaError("Error en la BD al realizar la modificación");
+                }
                 break;
-            case "cancelar":
+            case 1:  
+                        // no hacemos nada
+                break;
+            case 2:
+                this.dispose();  //volvemos a la ventana anterior                      
                 padre.setVisible(true);
-                this.dispose();
-                break;    
+                break;
             default:
-                padre.setVisible(true);
                 break;
-        }        
-    }
+        }    
+    } 
     
 }

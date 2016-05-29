@@ -27,11 +27,11 @@ import modelo.Socio;
  * @author Mario
  */
 public class VentanaAlta extends JFrame implements ActionListener {
-    JPanel contenedor;
-    JButton botonAlta, botonCancelar;
-    JTextField [] campo;
-    CtrlDataBase db;
-    JFrame padre;
+    protected JPanel contenedor;
+    protected JButton botonAlta, botonCancelar;
+    protected JTextField [] campo;
+    protected CtrlDataBase db;
+    protected JFrame padre;
     
     String [][] textEtiqTipoLong={{"CODIGO* :","NUMERIC","6"},
                                   {"NOMBRE* :","VARCHAR","50"},
@@ -50,8 +50,8 @@ public class VentanaAlta extends JFrame implements ActionListener {
         this.setTitle("Alta Socio");
         this.setVisible(true);
         initComponents();
-        this.pack();
         this.setSize(300, 300);
+        this.setResizable(false);
     }
     
     protected JComponent addCampos(){
@@ -77,7 +77,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
         
         botonAlta = new JButton("Alta");
         botonAlta.addActionListener(this);
-        botonAlta.setActionCommand("alta");
+        botonAlta.setActionCommand("aceptar");
         
         botonCancelar = new JButton("Cancelar");
         botonCancelar.addActionListener(this);
@@ -197,7 +197,7 @@ public class VentanaAlta extends JFrame implements ActionListener {
                 "Error", JOptionPane.INFORMATION_MESSAGE);
     }
     
-    protected void alta(){
+    protected void ejecutar(){
         if (datosCorrectos()){
             Socio s=new Socio(campo);
             if (db.ejecutaInsert(s)>0){
@@ -215,8 +215,8 @@ public class VentanaAlta extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         switch(e.getActionCommand()){
-            case "alta":
-                alta();
+            case "aceptar":
+                ejecutar();
                 break;
             case "cancelar":
                 padre.setVisible(true);

@@ -24,12 +24,12 @@ public class VentanaModificar extends VentanaAlta {
     }
     
     protected void rellena(Socio s){
-        campo[0].setText(s.getCod_soc());
+        campo[0].setText(s.getCodSoc());
         campo[0].setEditable(false);
         
         campo[1].setText(s.getNombre());
         campo[2].setText(s.getApellido());
-        campo[3].setText(s.getDni_nif());
+        campo[3].setText(s.getDniNif());
         campo[4].setText(s.getDireccion());
         campo[5].setText(s.getTlfMovil());   
     }
@@ -43,7 +43,7 @@ public class VentanaModificar extends VentanaAlta {
     }
     
     @Override
-    protected void alta(){
+    protected void ejecutar(){
         if (datosCorrectos()){ 
             Socio s=new Socio(campo);
             if (db.ejecutaUpdate(s)>0){

@@ -10,35 +10,41 @@ package modelo;
  * @author Mario
  */
 public class Factura {
-    private String id_fact;
-    private String fecha;
-    private String cabecera_fact;
+    private String idFact;
+    private String fecha;    //toDo estudiar la clase Date formato fecha 2016-02-01 00:00:00.0
+    private String cabeceraFact;
     private String total;
-    private String cod_soc;
+    private String codSoc;
     
-    static String [] cabecera={"COD_FACT","FECHA","CABECERA","TOTAL","COD_SOC"};
+    static String [] cabecera={"ID_FACT","FECHA","CABECERA","TOTAL","COD_SOC"};
 
-    public Factura(String id_fact, String fecha, String cabecera_fact, String total, String cod_soc) {
-        this.id_fact = id_fact;
-        this.fecha = fecha;
-        this.cabecera_fact = cabecera_fact;
+    public Factura(String idFact, String fecha, String cabeceraFact, String total, String codSoc) {
+        this.idFact = idFact;
+        this.fecha = fecha;    
+        this.cabeceraFact = cabeceraFact;
         this.total = total;
-        this.cod_soc = cod_soc;
+        this.codSoc = codSoc;
     }
     
-    public String [] getArraySocio(){
+    public String [] getArray(){
         String[] array=new String[cabecera.length];
-        array[0]=id_fact;
+        array[0]=idFact;
         array[1]=fecha;
-        array[2]=cabecera_fact;
+        array[2]=cabeceraFact;
         array[3]=total;
-        array[4]=cod_soc;
+        array[4]=codSoc;
+        System.out.println(fecha);
         return array;
     }
 
     public static String[] getCabecera() {
         return cabecera;
     }
-   
+
+    public String getCodSoc() {
+        return codSoc;
+    }
+    
+    
     
 }

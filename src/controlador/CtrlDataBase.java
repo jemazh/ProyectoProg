@@ -72,10 +72,10 @@ public class CtrlDataBase {
         
         try {
             PreparedStatement st=conexion.prepareStatement(cadena);
-            st.setInt(1,Integer.parseInt(s.getCod_soc()));
+            st.setInt(1,Integer.parseInt(s.getCodSoc()));
             st.setString(2,s.getNombre());
             st.setString(3,s.getApellido());
-            st.setString(4,s.getDni_nif());
+            st.setString(4,s.getDniNif());
             st.setString(5,s.getDireccion());
             st.setString(6,s.getTlfMovil());
             System.out.println("La sentencia es: "+cadena);
@@ -86,7 +86,7 @@ public class CtrlDataBase {
         return n;  
     }
     
-        public int ejecutaUpdate(Socio s){
+    public int ejecutaUpdate(Socio s){
         int n=0;
         String cadena= "UPDATE SOCIOS"
                      + " SET NOMBRE = ?,"
@@ -100,10 +100,10 @@ public class CtrlDataBase {
             PreparedStatement st=conexion.prepareStatement(cadena);
             st.setString(1,s.getNombre());
             st.setString(2,s.getApellido());
-            st.setString(3,s.getDni_nif());
+            st.setString(3,s.getDniNif());
             st.setString(4,s.getDireccion());
             st.setString(5,s.getTlfMovil());
-            st.setInt(6,Integer.parseInt(s.getCod_soc()));
+            st.setInt(6,Integer.parseInt(s.getCodSoc()));
             System.out.println("La sentencia es: "+cadena);
             n=st.executeUpdate();
         } catch (SQLException ex) {
@@ -140,14 +140,16 @@ public class CtrlDataBase {
         ArrayList <Socio> arry=new ArrayList();
         
         while(r.next()){
-            String cod_soc=compruebaNull(r.getString(1));
+            String codSoc=compruebaNull(r.getString(1));
             String nombre=compruebaNull(r.getString(2));
             String apellido=compruebaNull(r.getString(3));
             String dnif=compruebaNull(r.getString(4));
             String direccion=compruebaNull(r.getString(5));
             String tlfMovil=compruebaNull(r.getString(6));
-            arry.add(new Socio(cod_soc,nombre,apellido,dnif,direccion,tlfMovil));
+            arry.add(new Socio(codSoc,nombre,apellido,dnif,direccion,tlfMovil));
+            
         }
+        r.close();
         return arry;
     }
     
@@ -155,14 +157,15 @@ public class CtrlDataBase {
         ArrayList <Actividad> arry=new ArrayList();
         
         while(r.next()){
-            String id_act=compruebaNull(r.getString(1));
+            String idAct=compruebaNull(r.getString(1));
             String nombre=compruebaNull(r.getString(2));
             String fecha=compruebaNull(r.getString(3));
             String monitor=compruebaNull(r.getString(4));
             String capacidad=compruebaNull(r.getString(5));
-            String cod_soc=compruebaNull(r.getString(6));
-            arry.add(new Actividad(id_act,nombre,fecha,monitor,capacidad,cod_soc));
+            String codSoc=compruebaNull(r.getString(6));
+            arry.add(new Actividad(idAct,nombre,fecha,monitor,capacidad,codSoc));
         }
+        r.close();
         return arry;
     }
     
@@ -170,13 +173,14 @@ public class CtrlDataBase {
         ArrayList <Factura> arry=new ArrayList();
         
         while(r.next()){
-            String id_fact=compruebaNull(r.getString(1));
+            String idFact=compruebaNull(r.getString(1));
             String fecha=compruebaNull(r.getString(2));
             String cabecera=compruebaNull(r.getString(3));
             String total=compruebaNull(r.getString(4));
-            String cod_soc=compruebaNull(r.getString(5));
-            arry.add(new Factura(id_fact,fecha,cabecera,total,cod_soc));
+            String codSoc=compruebaNull(r.getString(5));
+            arry.add(new Factura(idFact,fecha,cabecera,total,codSoc));
         }
+        r.close();
         return arry;
     }
     
@@ -200,7 +204,9 @@ public class CtrlDataBase {
             System.out.println("SQL Exception:\n"+ex.getMessage());
         } catch (NumberFormatException e){
             System.out.println("NumberFormatException: \n"+e.getMessage());
-        }       
+        } catch (IndexOutOfBoundsException er){
+            System.out.println("IndexOutOfBoundsException: \n"+er.getMessage());
+        }      
         return s;  
     }
     
@@ -229,12 +235,12 @@ public class CtrlDataBase {
     public ArrayList listaActividad() { 
         ArrayList arry=new ArrayList();
         
-        String cadena= "SELECT C.ID_ACTIVIDAD,C.NOMBRE_ACTIVIDAD,C.FECHA_INICIO,"
-                           + " C.PERSONA_IMPARTE,C.CAPACIDAD,S.COD_SOC"
+        String cadena= "SELECT A.ID_ACTIVIDAD,A.NOMBRE_ACTIVIDAD,A.FECHA_INICIO,"
+                           + " A.PERSONA_IMPARTE,A.CAPACIDAD,S.COD_SOC"
                      + " FROM CURSA C JOIN ACTIVIDAD A"
-                     + " ON (C.ID_ACTIVIDAD = A.ID_ACTIVIDAD)"
+                     + " ON (C.ACTIVIDAD_ID_ACTIVIDAD = A.ID_ACTIVIDAD)"
                      + " JOIN SOCIOS S"
-                     + " ON (C.ID_SOC = S.ID_SOC)"
+                     + " ON (C.SOCIOS_ID_SOC = S.ID_SOC)"
                      + " ORDER BY 1";
         
         try {
@@ -256,7 +262,7 @@ public class CtrlDataBase {
     public ArrayList listaFactura() { 
         ArrayList arry=new ArrayList(); 
                
-        String cadena = "SELECT F.ID_FACTURA,F.FECHA_FACTURA,F.CABECERA_FACTURA,"
+        String cadena = "SELECT F.ID_FACT,F.FECHA_FACTURA,F.CABECERA_FACTURA,"
                            +  " F.TOTAL,S.COD_SOC"
                     + " FROM FACTURA F JOIN SOCIOS S"
                     + " ON (F.SOCIOS_ID_SOC = S.ID_SOC)"
@@ -270,6 +276,7 @@ public class CtrlDataBase {
             ResultSet rs=st.executeQuery();
             
             arry=toArrayListFactura(rs);
+            
                 
         } catch (SQLException ex) {
             System.out.println("SQL Exception:\n"+ex.getMessage());    

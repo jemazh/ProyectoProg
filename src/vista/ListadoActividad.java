@@ -17,33 +17,29 @@ import modelo.Socio;
  * @author Mario
  */
 public class ListadoActividad extends VentanaListado{
-    ArrayList  lista;
-    String [] tituloColumnas;
-    boolean esActividad;
 
-    ListadoActividad(CtrlDataBase d, JFrame padre) {
-        super(d,padre);
-        this.lista=db.listaActividad();
-        this.esActividad=true;
-    }
-    
-    ListadoActividad(CtrlDataBase d, JFrame padre,ArrayList <Socio> s) {
-        super(d,padre);
-        this.lista=s;
-        this.esActividad=false;
+    ListadoActividad(CtrlDataBase d, JFrame padre,ArrayList s) {
+        super(d,padre,s);
     }
     
     
     @Override
     public void cabeceras(){
-        if (esActividad){
-            tituloColumnas=Actividad.getCabecera();
-        }else{
-            tituloColumnas=Socio.getCabecera();
-        }
-        
-        for (int i = 0; i < tituloColumnas.length; i++) {
-            modelo.addColumn(tituloColumnas[i]);
+        String [] tituloColumnas;
+        ListIterator it= lista.listIterator();
+        if (it.hasNext()){
+            try{
+                Actividad a=(Actividad)it.next();
+                tituloColumnas=Actividad.getCabecera();
+                for (int i = 0; i < tituloColumnas.length; i++) {
+                    modelo.addColumn(tituloColumnas[i]);
+                }              
+            }catch(ClassCastException e){
+                tituloColumnas=Socio.getCabecera();
+                for (int i = 0; i < tituloColumnas.length; i++) {
+                    modelo.addColumn(tituloColumnas[i]);
+                }
+            }
         }
     }
     
@@ -53,20 +49,20 @@ public class ListadoActividad extends VentanaListado{
         cabeceras();
         ListIterator it= lista.listIterator();
         
-        if (esActividad){          
+        try {
             Actividad a;
             while(it.hasNext()){
                 a=(Actividad)it.next();           
                 modelo.addRow(a.getArray());
             }
-        }else{
+            
+        }catch (ClassCastException e){
             Socio s;
             while(it.hasNext()){
                 s=(Socio)it.next();          
                 modelo.addRow(s.getArray());
             }
         }
-
     }
     
     @Override
@@ -82,9 +78,9 @@ public class ListadoActividad extends VentanaListado{
         ArrayList <Socio> arry=new ArrayList();
         
         for (Actividad a: arryA){
-            if (a.getId_act().equals(dato)){
+            if (a.getIdAct().equals(dato)){
                 for (Socio s: arryS){
-                    if (a.getCod_soc().equals(s.getCod_soc())){
+                    if (a.getCodSoc().equals(s.getCodSoc())){
                         arry.add(s);                   
                     }
                 }                
